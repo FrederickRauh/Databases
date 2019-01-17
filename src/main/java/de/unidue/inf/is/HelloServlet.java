@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.unidue.inf.is.domain.User;
 
-
-
 /**
  * Einfaches Beispiel, das die Vewendung der Template-Engine zeigt.
  */
