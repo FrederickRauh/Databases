@@ -34,7 +34,7 @@ public final class HelloServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Put the user list in request and let freemarker paint it.
         request.setAttribute("users", userList);
-
+        system.out.println();
         request.getRequestDispatcher("/hello.ftl").forward(request, response);
     }
 
