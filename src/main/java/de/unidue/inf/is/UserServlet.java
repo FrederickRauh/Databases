@@ -24,7 +24,7 @@ public final class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // mach was
-        User userToAdd = new User("Manfred", "Mustermann");
+        User userToAdd = new User("Max", "Mustermann");
 
         try (UserStore userStore = new UserStore()) {
             userStore.addUser(userToAdd);
