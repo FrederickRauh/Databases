@@ -28,7 +28,19 @@ public final class DBUtil {
         }
     }
 
-    
+    public static Connection createConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("com.ibm.db2.jcc.DB2Driver");
+
+        Properties properties = new Properties();
+        properties.setProperty("securityMechanism", Integer.toString(com.ibm.db2.jcc.DB2BaseDataSource.USER_ONLY_SECURITY));
+        properties.setProperty("user","dblabXX");
+        properties.setProperty("password","password");
+
+        Connection connection = DriverManager.getConnection("jdbc:db2://<helios>.is.inf.uni-due.de:50005/PROJECT:currentSchema=DBLABXX;", properties);
+
+        return connection;
+    }
+
     public static Connection getConnection(String database) throws SQLException {
         final String url = "jdbc:db2:" + database;
         return DriverManager.getConnection(url);
@@ -38,27 +50,37 @@ public final class DBUtil {
     // Diese Methode benutzen, um sich von außerhalb der Uni mit der DB zu verbinden
     public static Connection getExternalConnection(String database) throws SQLException {
         Properties properties = new Properties();
-        
-        InputStream input = null;
-    	try {
-    		input = new FileInputStream("settings.properties");
 
+        InputStream input = null;
+        System.out.println("Vor dem Try");
+    	try {
+    	    System.out.println("Im Try");
+    		input = new FileInputStream("settings.properties");
     		// Zugangsdaten aus der Properties-Datei lesen
     		properties.load(input);
     	} catch (IOException ex) {
-    		ex.printStackTrace();
+    		System.out.println(ex);
     	}
-    	
+
 		String user = properties.getProperty("gruppenname");
 		String pass = properties.getProperty("passwort");
 		String rechnername = properties.getProperty("rechnername");
-		
-		String gruppennummer = user.substring(user.length()-2,user.length());
-		System.out.println(gruppennummer);
 
-        final String url = "jdbc:db2://"+rechnername+".is.inf.uni-due.de:500"+gruppennummer+"/" + database + ":currentSchema="+user+";";
-        Connection connection = DriverManager.getConnection(url, user,pass);
-        return connection;
+		String gruppennummer = user.substring(user.length()-2,user.length());
+
+        if(input != null){
+            System.out.println("INPUT: " + input);
+            final String url = "jdbc:db2://"+rechnername+".is.inf.uni-due.de:500"+gruppennummer+"/" + database + ":currentSchema="+user+";";
+            Connection connection = DriverManager.getConnection(url, user,pass);
+            return connection;
+        }else{
+            System.out.println("INPUT: " + input);
+            final String url = "jdbc:db2://helios.is.inf.uni-due.de:50059/PROJECT:currentSchema=dbp59;";
+            Connection connection = DriverManager.getConnection(url, user,pass);
+            return connection;
+        }
+
+
     }
 
 

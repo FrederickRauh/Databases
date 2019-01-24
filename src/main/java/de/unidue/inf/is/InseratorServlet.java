@@ -23,8 +23,8 @@ public final class InseratorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
                     throws ServletException, IOException {
   
-	final String databaseToCheck = "YOUR_DB";
-        boolean databaseExists = DBUtil.checkDatabaseExists(databaseToCheck);
+	final String databaseToCheck = "PROJECT";
+        boolean databaseExists = DBUtil.checkDatabaseExistsExternal(databaseToCheck);
 
         request.setAttribute("db2name", databaseToCheck);
 

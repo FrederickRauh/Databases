@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.unidue.inf.is.utils.DBUtil;
 
-public class InseratorCreateServlet extends HttpServlet {
+public class InseratorCommentServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,21 +21,20 @@ public class InseratorCreateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("answer", "");
-        request.getRequestDispatcher("anzeige_erstellen.ftl").forward(request, response);
+        request.getRequestDispatcher("inserator_comment.ftl").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String htmlResponse = "";
+        String htmlResponse = " ";
         String input = request.getParameter("createInput");
         if (input.length() <= 280 && input.length() > 0) {
             Connection connection = null;
-            String sql = "INSERT INTO ANZEIGE (text, creator) VALUES (?, 'Test')";
+            String sql = "INSERT INTO KOMMENTAR (text, creator) VALUES (?, 'Test')";
             PreparedStatement preparedStatement;
             try {
-                connection = DBUtil.getConnection("PROJECT");
+                connection = DBUtil.getExternalConnection("inserator");
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, input);
                 preparedStatement.executeUpdate();
@@ -43,7 +42,7 @@ public class InseratorCreateServlet extends HttpServlet {
             } catch (SQLException sqlE) {
                 sqlE.printStackTrace();
             }
-            htmlResponse = "<p>Erfolgreich ein Inserat erstellt</p>";
+            htmlResponse = "<p>Erfolgreich ein Comment erstellt</p>";
         } else {
             if (input.length() > 280) {
                 htmlResponse = "<p>Text zu lang, bitte benutze weniger als 280 Zeichen</p>";
@@ -52,7 +51,7 @@ public class InseratorCreateServlet extends HttpServlet {
             }
         }
         request.setAttribute("answer", htmlResponse);
-        request.getRequestDispatcher("anzeige_erstellen.ftl").forward(request, response);
+        request.getRequestDispatcher("inserator_comment.ftl").forward(request, response);
     }
 
 }

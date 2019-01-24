@@ -53,7 +53,51 @@
     <servlet-name>inserator_servlet</servlet-name>
     <url-pattern>/inserator</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet>
+    <servlet-name>inserator_details_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.InseratorDetailsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>inserator_details_servlet</servlet-name>
+    <url-pattern>/details</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>inserator_edit_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.InseratorEditServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>inserator_edit_servlet</servlet-name>
+    <url-pattern>/edit</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>inserator_create_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.InseratorCreateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>inserator_create_servlet</servlet-name>
+    <url-pattern>/create</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>mainpage_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.MainPageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mainpage_servlet</servlet-name>
+    <url-pattern>/main</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>user_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.UserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>user_servlet</servlet-name>
+    <url-pattern>/user</url-pattern>
+  </servlet-mapping>
   <!-- ******************************************************** -->
   
   <security-constraint>
