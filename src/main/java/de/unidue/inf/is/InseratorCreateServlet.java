@@ -42,7 +42,7 @@ public class InseratorCreateServlet extends HttpServlet {
             } catch (SQLException sqlE) {
                 sqlE.printStackTrace();
             }
-            htmlResponse = "<p>Erfolgreich ein Inerat erstellt</p>";
+            htmlResponse = "<p>Erfolgreich ein Inserat erstellt</p>";
         } else {
             if (input.length() > 280) {
                 htmlResponse = "<p>Text zu lang, bitte benutze weniger als 280 Zeichen</p>";
@@ -51,7 +51,7 @@ public class InseratorCreateServlet extends HttpServlet {
             }
         }
         request.setAttribute("answer", htmlResponse);
-        request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
+        request.getRequestDispatcher("anzeige_erstellen.ftl").forward(request, response);
     }
 
 }
