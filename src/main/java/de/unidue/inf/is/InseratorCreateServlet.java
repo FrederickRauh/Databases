@@ -27,7 +27,8 @@ public class InseratorCreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
 //        double price = Integer.parseInt(request.getParameter("price"));
 //        String text = request.getParameter("text");
 //        String title = request.getParameter("title");
@@ -43,26 +44,20 @@ public class InseratorCreateServlet extends HttpServlet {
 //                }
 //            }
 //        }
-
-
-
         String htmlResponse = "";
         if (canPost) {
-            Connection connection = null;
-            String sql = "INSERT INTO ANZEIGE (titel, text, preis, ersteller, status) VALUES ('Bitte', 'bitte', 123, 'Frederick', 'aktiv')";
-            PreparedStatement preparedStatement;
+
+            String sql = "INSERT INTO ANZEIGE(titel, text, preis, ersteller, status) values ('Bitte', 'Bitte bitte bitte', 100 ,'k.ralf', 'aktiv')";
+
             try {
-                connection = DBUtil.getExternalConnection("PROJECT");
-                System.out.println("Connected");
+                connection = DBUtil.createConnection();
                 preparedStatement = connection.prepareStatement(sql);
-//                preparedStatement.setString(1, title);
-//                preparedStatement.setClob(2, text);
-//                preparedStatement.setBigDecimal(3, price);
-                System.out.println("PreparedStatement: " + preparedStatement);
                 preparedStatement.executeUpdate();
                 connection.close();
-            } catch (SQLException sqlE) {
-                sqlE.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException c){
+                c.printStackTrace();
             }
             htmlResponse = "<p>Erfolgreich ein Inserat erstellt</p>";
         } else {

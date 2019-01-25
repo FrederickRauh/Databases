@@ -55,6 +55,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>inserator_all_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.InseratorAllServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>inserator_all_servlet</servlet-name>
+    <url-pattern>/all</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>inserator_details_servlet</servlet-name>
     <servlet-class>de.unidue.inf.is.InseratorDetailsServlet</servlet-class>
   </servlet>

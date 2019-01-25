@@ -11,7 +11,6 @@ import java.util.Properties;
 import com.ibm.db2.jcc.DB2Driver;
 
 
-
 public final class DBUtil {
 
     private DBUtil() {
@@ -22,22 +21,17 @@ public final class DBUtil {
         com.ibm.db2.jcc.DB2Driver driver = new DB2Driver();
         try {
             DriverManager.registerDriver(driver);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new Error("Laden des Datenbanktreiber nicht möglich");
         }
     }
 
     public static Connection createConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.ibm.db2.jcc.DB2Driver");
-
         Properties properties = new Properties();
-        properties.setProperty("securityMechanism", Integer.toString(com.ibm.db2.jcc.DB2BaseDataSource.USER_ONLY_SECURITY));
-        properties.setProperty("user","dblabXX");
-        properties.setProperty("password","password");
-
-        Connection connection = DriverManager.getConnection("jdbc:db2://<helios>.is.inf.uni-due.de:50005/PROJECT:currentSchema=DBLABXX;", properties);
-
+        properties.setProperty("user", "dbp59");
+        properties.setProperty("password", "uvoe9ooz");
+        Connection connection = DriverManager.getConnection("jdbc:db2://helios.is.inf.uni-due.de:50059/PROJECT:currentSchema = dbp59;", properties);
         return connection;
     }
 
@@ -50,29 +44,28 @@ public final class DBUtil {
     // Diese Methode benutzen, um sich von außerhalb der Uni mit der DB zu verbinden
     public static Connection getExternalConnection(String database) throws SQLException {
         Properties properties = new Properties();
-
         InputStream input = null;
-    	try {
-    		input = new FileInputStream("settings.properties");
-    		// Zugangsdaten aus der Properties-Datei lesen
-    		properties.load(input);
-    	} catch (IOException ex) {
-    		ex.printStackTrace();
-    	}
+        try {
+            input = new FileInputStream("settings.properties");
+            // Zugangsdaten aus der Properties-Datei lesen
+            properties.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
-		String user = properties.getProperty("gruppenname");
-		String pass = properties.getProperty("passwort");
-		String rechnername = properties.getProperty("rechnername");
+        String user = properties.getProperty("gruppenname");
+        String pass = properties.getProperty("passwort");
+        String rechnername = properties.getProperty("rechnername");
 
-		String gruppennummer = user.substring(user.length()-2,user.length());
+        String gruppennummer = user.substring(user.length() - 2, user.length());
 
-        if(input != null){
-            final String url = "jdbc:db2://"+rechnername+".is.inf.uni-due.de:500"+gruppennummer+"/" + database + ":currentSchema="+user+";";
-            Connection connection = DriverManager.getConnection(url, user,pass);
+        if (input != null) {
+            final String url = "jdbc:db2://" + rechnername + ".is.inf.uni-due.de:500" + gruppennummer + "/" + database + ":currentSchema = " + user + ";";
+            Connection connection = DriverManager.getConnection(url, user, pass);
             return connection;
-        }else{
+        } else {
             final String url = "jdbc:db2://helios.is.inf.uni-due.de:50059/PROJECT:currentSchema=dbp59;";
-            Connection connection = DriverManager.getConnection(url, user,pass);
+            Connection connection = DriverManager.getConnection(url, "dbp59", "uvoe9ooz");
             return connection;
         }
     }
@@ -82,12 +75,13 @@ public final class DBUtil {
         // Nur für Demozwecke!
         boolean exists = false;
 
-        try (Connection connection = getExternalConnection(database)) {
+        try (Connection connection = createConnection()) {
             exists = true;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             exists = false;
             e.printStackTrace();
+        } catch(ClassNotFoundException c){
+
         }
 
         return exists;
@@ -100,8 +94,7 @@ public final class DBUtil {
 
         try (Connection connection = getConnection(database)) {
             exists = true;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             exists = false;
             e.printStackTrace();
         }
