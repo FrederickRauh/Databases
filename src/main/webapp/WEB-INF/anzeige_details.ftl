@@ -78,7 +78,7 @@
         <div id ="ersteller">${ersteller}</div>
             <form action="BenutzerSeiteURL">
                 <input name="user_profil" type="hidden" value="$user_profil">
-                <input type="submit" value="Geh zu Benutzerseite" />
+                <input type="submit" value="zuUser_profil" />
             </form>
         </fieldset>
 

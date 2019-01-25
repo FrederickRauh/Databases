@@ -33,6 +33,7 @@ public class InseratorDetailsServlet extends HttpServlet {
         String deleteOption = "visibility: hidden;";
         String editOption = "visibilty: hidden";
         String buyOption = "";
+        String zuUser_profil = "";
 
         if (anzeigeID == null) {
             anzeigeID = request.getParameter("param");
@@ -84,7 +85,7 @@ public class InseratorDetailsServlet extends HttpServlet {
             request.setAttribute("text", htmlResponse);
             request.setAttribute("preis", htmlResponse);
             request.setAttribute("erstellungsdatum", htmlResponse);
-            request.setAttribute("ersteller", htmlResponse);
+            request.setAttribute("benutzername", zuUser_profil);
             request.getRequestDispatcher("anzeige_details.ftl").forward(request, response);
 
 
@@ -123,6 +124,11 @@ public class InseratorDetailsServlet extends HttpServlet {
             //   Edit Button
         } else if (request.getParameter("Editieren") != null) {
             request.getRequestDispatcher("anzeige_editieren").forward(request, response);
+
+            //   Benutzername Button
+        } else if (request.getParameter("zuUser_profil") != null) {
+            request.getRequestDispatcher("user_profil").forward(request, response);
+
 
             // Delete button
         } else if (request.getParameter("Löschen") != null) {
