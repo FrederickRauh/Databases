@@ -75,7 +75,7 @@
         <div id ="text">${text}</div>
         <div id ="preis">${preis}</div>
         <div id ="erstellungsdatum">${erstellungsdatum}</div>
-        <div id ="ersteller">${ersteller}</div>
+        <div id ="ersteller"></div>
             <form action="BenutzerSeiteURL">
                 <input name="user_profil" type="hidden" value="$user_profil">
                 <input type="submit" value="zuUser_profil" />
@@ -87,7 +87,7 @@
         <div>
 
             <form  method = "post" action = "/detail">             <!-- /detail ersetzen -->
-                <input type="hidden" name ="ID" value = "${idP}"/>
+                <input type="hidden" name ="ID" value = ""/>
                 <input  type="submit" name="Löschen" value ="Löschen" />
                 <input  type="submit" name="Kaufen" value ="Kaufen" />
             </form>

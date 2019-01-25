@@ -52,14 +52,12 @@ public final class DBUtil {
         Properties properties = new Properties();
 
         InputStream input = null;
-        System.out.println("Vor dem Try");
     	try {
-    	    System.out.println("Im Try");
     		input = new FileInputStream("settings.properties");
     		// Zugangsdaten aus der Properties-Datei lesen
     		properties.load(input);
     	} catch (IOException ex) {
-    		System.out.println(ex);
+    		ex.printStackTrace();
     	}
 
 		String user = properties.getProperty("gruppenname");
@@ -69,18 +67,14 @@ public final class DBUtil {
 		String gruppennummer = user.substring(user.length()-2,user.length());
 
         if(input != null){
-            System.out.println("INPUT: " + input);
             final String url = "jdbc:db2://"+rechnername+".is.inf.uni-due.de:500"+gruppennummer+"/" + database + ":currentSchema="+user+";";
             Connection connection = DriverManager.getConnection(url, user,pass);
             return connection;
         }else{
-            System.out.println("INPUT: " + input);
             final String url = "jdbc:db2://helios.is.inf.uni-due.de:50059/PROJECT:currentSchema=dbp59;";
             Connection connection = DriverManager.getConnection(url, user,pass);
             return connection;
         }
-
-
     }
 
 
