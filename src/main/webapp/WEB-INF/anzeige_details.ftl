@@ -71,10 +71,11 @@
 
     <div id="inserator_details">
         <fieldset>
-        <div id ="Titel">${Titel}</div>
-        <div id ="Text">${Text}</div>
-        <div id ="Datum">${Datum}</div>
-        <div id ="Preis">${Preis}</div>
+        <div id ="titel">${titel}</div>
+        <div id ="text">${text}</div>
+        <div id ="preis">${preis}</div>
+        <div id ="erstellungsdatum">${erstellungsdatum}</div>
+        <div id ="ersteller">${ersteller}</div>
             <form action="BenutzerSeiteURL">
                 <input name="user_profil" type="hidden" value="$user_profil">
                 <input type="submit" value="Geh zu Benutzerseite" />
