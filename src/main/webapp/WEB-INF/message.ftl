@@ -9,7 +9,7 @@
 <div id="wrapper">
 	<div id="header">
 		<table>
-			<tbody>
+			<tbody id = "NavBar">
 			<tr>
 				<td><a href="/all"><link>All Inserate</link></a></td>
 				<td><p> | </p></td>
@@ -18,6 +18,13 @@
 				<td><a href="/user"><link>Benutzer</link></a></td>
 				<td><p> | </p></td>
 				<td><a href="/message"><link>Nachrichten</link></a></td>
+				<td></td>
+				<td></td>
+				<td>
+					<form name= "createText" action="/message" method="get">
+						<textarea id="userData" name="userData" cols="10" rows="1" on></textarea>
+					</form>
+				</td>
 			</tr>
 			</tbody>
 		</table>
@@ -32,7 +39,23 @@
 			</tr>
 			</thead>
 			<tbody>
-			<#list messages as message>
+			<#list messagesIn as message>
+				<tr>
+					<td>${message.sender}</td> <td>${message.message}</td>
+				</tr>
+			</#list>
+			</tbody>
+		</table>
+		<h2>Nachrichten von Ihnen</h2>
+		<table>
+			<thead>
+			<tr>
+				<th>Von: </th>
+				<th>Nachricht: </th>
+			</tr>
+			</thead>
+			<tbody>
+			<#list messagesOut as message>
 				<tr>
 					<td>${message.sender}</td> <td>${message.message}</td>
 				</tr>

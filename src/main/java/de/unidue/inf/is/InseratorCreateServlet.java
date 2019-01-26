@@ -29,6 +29,7 @@ public class InseratorCreateServlet extends HttpServlet {
             throws ServletException, IOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+
         double price = Integer.parseInt(request.getParameter("price"));
         String text = request.getParameter("text");
         String title = request.getParameter("title");

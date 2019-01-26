@@ -12,8 +12,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import de.unidue.inf.is.domain.Message;
+import de.unidue.inf.is.domain.User;
 import de.unidue.inf.is.utils.DBUtil;
 
 
@@ -21,35 +23,60 @@ public class MessageServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static List<Message> messageList = new ArrayList<>();
+    private static List<Message> messageIn = new ArrayList<>();
+    private static List<Message> messageOut = new ArrayList<>();
+
+    private static List<List<Message>> messageList = new ArrayList<List<Message>>();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "Select TEXT AS message, ABSENDER AS sender, empfaenger AS receiver  FROM  NACHRICHT";
-        messageList = new ArrayList<Message>();
-        try {
-            connection = DBUtil.createConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            ResultSet result = preparedStatement.executeQuery();
-            while (result.next()) {
-                String message = result.getString("message");
-                String sender = result.getString("sender");
-                messageList.add(new Message("", sender, message));
-            }
-            result.close();
-            connection.close();
+        messageIn = new ArrayList<Message>();
+        messageOut = new ArrayList<Message>();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e1) {
-            e1.printStackTrace();
+        HttpSession session = request.getSession();
+        if(session.getAttribute("login") != null){
+            User user = User.class.cast(session.getAttribute("user"));
+
+            String sql = "Select * FROM  NACHRICHT WHERE empfaenger = '" + user.getUsername() + "'" ;
+
+            System.out.println(sql);
+
+            try {
+                connection = DBUtil.createConnection();
+                preparedStatement = connection.prepareStatement(sql);
+                ResultSet result = preparedStatement.executeQuery();
+                while (result.next()) {
+                    String message = result.getString("text");
+                    String sender = result.getString("absender");
+                    String receiver = result.getString("empfaenger");
+                    if(receiver.equals(user.getUsername())){
+                        messageIn.add(new Message(receiver, sender, message));
+                    }else{
+                        messageOut.add(new Message(receiver, sender, message));
+                    }
+
+                }
+                result.close();
+                connection.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
 
-        request.setAttribute("messages", messageList);
+        System.out.println(messageIn.size());
+        System.out.println(messageOut.size());
+
+        request.setAttribute("messagesIn", messageIn);
+        request.setAttribute("messagesOut", messageOut);
+
+
+
         request.getRequestDispatcher("message.ftl").forward(request, response);
     }
 

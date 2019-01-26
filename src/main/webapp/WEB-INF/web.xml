@@ -77,12 +77,12 @@
 
 
   <servlet>
-    <servlet-name>inserator_details_servlet</servlet-name>
-    <servlet-class>de.unidue.inf.is.InseratorDetailsServlet</servlet-class>
+    <servlet-name>lgoin_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.LoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>inserator_details_servlet</servlet-name>
-    <url-pattern>/details</url-pattern>
+    <servlet-name>lgoin_servlet</servlet-name>
+    <url-pattern>/login</url-pattern>
   </servlet-mapping>
 
   <servlet>

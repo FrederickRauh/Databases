@@ -20,27 +20,16 @@
     padding: 1em 0em 1em 1em;
 }
 
-#Login{
-    align-items: center;
+table{
+    margin: 0;
+    background: lightgray;
+    position: absolute;
+    top: 7em;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
 }
 
-#NavBar td{
-    text-align: center;
-
-}
-
-#userData{
-    margin-right: 1%;
-    float: right;
-}
-
-#site{
-    background-color: #fff;
-    padding: 20px 0px 0px 0px;
-}
-#centerBlock{
-    margin:0 auto;
-}
 a {
     color:white;
     text-decoration: none;

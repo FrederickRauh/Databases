@@ -13,8 +13,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import de.unidue.inf.is.domain.Advert;
+import de.unidue.inf.is.domain.User;
 import de.unidue.inf.is.utils.DBUtil;
 
 public class InseratorAllServlet extends HttpServlet {
@@ -29,31 +31,34 @@ public class InseratorAllServlet extends HttpServlet {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-
-        String sql = "Select TEXT AS text, TITEL AS title, PREIS AS price FROM  ANZEIGE";
-
         advertList = new ArrayList<Advert>();
 
-        try{
-            connection = DBUtil.createConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            ResultSet result = preparedStatement.executeQuery();
-            while(result.next()){
-                double price = result.getDouble("price");
-                String text = result.getString("text");
-                String title = result.getString("title");
-                Advert toAdd = new Advert(price, text, title);
-                advertList.add(toAdd);
+        HttpSession session = request.getSession();
+        if (session.getAttribute("login") != null) {
+            User user = User.class.cast(session.getAttribute("user"));
+
+            String sql = "Select TEXT AS text, TITEL AS title, PREIS AS price FROM  ANZEIGE";
+
+            try {
+                connection = DBUtil.createConnection();
+                preparedStatement = connection.prepareStatement(sql);
+                ResultSet result = preparedStatement.executeQuery();
+                while (result.next()) {
+                    double price = result.getDouble("price");
+                    String text = result.getString("text");
+                    String title = result.getString("title");
+                    Advert toAdd = new Advert(price, text, title);
+                    advertList.add(toAdd);
+                }
+                result.close();
+                connection.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
-            result.close();
-            connection.close();
-
-        }catch(SQLException e){
-            e.printStackTrace();
-        }catch(Exception e1){
-            e1.printStackTrace();
         }
-
         request.setAttribute("adverts", advertList);
         request.getRequestDispatcher("inserator_all.ftl").forward(request, response);
     }
