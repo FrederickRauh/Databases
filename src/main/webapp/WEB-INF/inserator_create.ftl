@@ -16,6 +16,8 @@
 				<td><a href="/create"><link>Inserat erstellen</link></a></td>
 				<td><p> | </p></td>
 				<td><a href="/user"><link>Benutzer</link></a></td>
+				<td><p> | </p></td>
+				<td><a href="/message"><link>Nachrichten</link></a></td>
 			</tr>
 			</tbody>
 		</table>

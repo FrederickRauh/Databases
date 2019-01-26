@@ -64,6 +64,19 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>message_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.MessageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>message_servlet</servlet-name>
+    <url-pattern>/message</url-pattern>
+  </servlet-mapping>
+
+
+
+
+
+  <servlet>
     <servlet-name>inserator_details_servlet</servlet-name>
     <servlet-class>de.unidue.inf.is.InseratorDetailsServlet</servlet-class>
   </servlet>

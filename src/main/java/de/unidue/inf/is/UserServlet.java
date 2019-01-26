@@ -77,37 +77,28 @@ public final class UserServlet extends HttpServlet {
 
         if (firstname.length() > 0 && firstname.length() <= 50) {
             if (lastname.length() > 0 && lastname.length() <= 50) {
-                username = lastname.substring(0,1) + "." + firstname;
+                username = lastname.substring(0, 1) + "." + firstname;
                 this.userList.add(new User(firstname, lastname, username));
                 canPost = true;
             }
         }
 
-        String htmlResponse = "";
-        if(canPost){
-        String sql = "INSERT INTO BENUTZER(benutzername, name) values (?, ?)";
-        try {
-            connection = DBUtil.createConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, firstname + " " + lastname);
-            preparedStatement.executeUpdate();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException c) {
-            c.printStackTrace();
+        if (canPost) {
+            String sql = "INSERT INTO BENUTZER(benutzername, name) values (?, ?)";
+            try {
+                connection = DBUtil.createConnection();
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, firstname + " " + lastname);
+                preparedStatement.executeUpdate();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException c) {
+                c.printStackTrace();
+            }
         }
-        htmlResponse = "<p>Erfolgreich ein Benutzer erstellt</p>";
-    } else
-
-    {
-        htmlResponse = "<p>Geht nicht</p>";
+        request.setAttribute("users", userList);
+        request.getRequestDispatcher("user.ftl").forward(request, response);
     }
-        request.setAttribute("answer" ,htmlResponse);
-        request.setAttribute("users" ,userList);
-        request.getRequestDispatcher("user.ftl").
-
-    forward(request, response);
-}
 }

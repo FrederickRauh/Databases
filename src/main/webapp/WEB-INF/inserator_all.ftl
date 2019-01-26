@@ -16,6 +16,8 @@
                 <td><a href="/create"><link>Inserat erstellen</link></a></td>
                 <td><p> | </p></td>
                 <td><a href="/user"><link>Benutzer</link></a></td>
+                <td><p> | </p></td>
+                <td><a href="/message"><link>Nachrichten</link></a></td>
             </tr>
             </tbody>
         </table>
@@ -26,9 +28,9 @@
                 <tr>
                     <th>Title</th>  <th>Preis</th> <th>Text</th>
                 </tr>
-                <#list anzeigen as anzeige>
+                <#list adverts as advert>
                     <tr>
-                        <td>${anzeige.title}</td> <td>${anzeige.price}</td> <td>${anzeige.text}</td>
+                        <td>${advert.title}</td> <td>${advert.price}</td> <td>${advert.text}</td>
                     </tr>
                 </#list>
             </table>
