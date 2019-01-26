@@ -69,7 +69,7 @@ public class InseratorAllServlet extends HttpServlet {
     }
 
 
-    //todo nur den einen Wert wieder bekommen... momentan wird immer der erste geliefert
+    //todo weiter leiten auf die entsprechende detail page
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
