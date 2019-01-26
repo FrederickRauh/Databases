@@ -1,16 +1,16 @@
 package de.unidue.inf.is.domain;
 
-public final class Anzeige {
+public final class Advert {
 
     private double price;
     private String text;
     private String title;
 
-    public Anzeige() {
+    public Advert() {
     }
 
 
-    public Anzeige(double price, String text, String title) {
+    public Advert(double price, String text, String title) {
         this.price = price;
         this.text = text;
         this.title = title;

@@ -1,32 +1,27 @@
 package de.unidue.inf.is;
 
 import java.io.IOException;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ibm.db2.jcc.am.SqlException;
-import de.unidue.inf.is.domain.Anzeige;
+import de.unidue.inf.is.domain.Advert;
 import de.unidue.inf.is.utils.DBUtil;
 
 public class InseratorAllServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static List<Anzeige> anzeigeList = new ArrayList<>();
+    private static List<Advert> advertList = new ArrayList<>();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +32,7 @@ public class InseratorAllServlet extends HttpServlet {
 
         String sql = "Select TEXT AS text, TITEL AS title, PREIS AS price FROM  ANZEIGE";
 
-        System.out.println(sql);
+        advertList = new ArrayList<Advert>();
 
         try{
             connection = DBUtil.createConnection();
@@ -47,9 +42,9 @@ public class InseratorAllServlet extends HttpServlet {
                 double price = result.getDouble("price");
                 String text = result.getString("text");
                 String title = result.getString("title");
-                anzeigeList.add(new Anzeige(price, text, title));
+                Advert toAdd = new Advert(price, text, title);
+                advertList.add(toAdd);
             }
-            System.out.println(anzeigeList);
             result.close();
             connection.close();
 
@@ -59,9 +54,7 @@ public class InseratorAllServlet extends HttpServlet {
             e1.printStackTrace();
         }
 
-
-
-        request.setAttribute("anzeigen", anzeigeList);
+        request.setAttribute("anzeigen", advertList);
         request.getRequestDispatcher("inserator_all.ftl").forward(request, response);
     }
 

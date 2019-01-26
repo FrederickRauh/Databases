@@ -35,7 +35,7 @@ public final class InseratorServlet extends HttpServlet {
             request.setAttribute("db2exists", "nicht vorhanden :-(");
         }
 
-        request.getRequestDispatcher("inserator.ftl").forward(request, response);
+        request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
     }
 
 }

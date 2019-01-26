@@ -22,11 +22,11 @@ public final class HelloServlet extends HttpServlet {
 
     // Just prepare static data to display on screen
     static {
-        userList.add(new User("Bill", "Gates"));
-        userList.add(new User("Steve", "Jobs"));
-        userList.add(new User("Larry", "Page"));
-        userList.add(new User("Sergey", "Brin"));
-        userList.add(new User("Larry", "Ellison"));
+        userList.add(new User("Bill", "Gates", ""));
+        userList.add(new User("Steve", "Jobs", ""));
+        userList.add(new User("Larry", "Page", ""));
+        userList.add(new User("Sergey", "Brin", ""));
+        userList.add(new User("Larry", "Ellison", ""));
     }
 
 
@@ -48,7 +48,7 @@ public final class HelloServlet extends HttpServlet {
         if (null != firstname && null != lastname && !firstname.isEmpty() && !lastname.isEmpty()) {
 
             synchronized (userList) {
-                userList.add(new User(firstname, lastname));
+                userList.add(new User(firstname, lastname, ""));
             }
 
         }

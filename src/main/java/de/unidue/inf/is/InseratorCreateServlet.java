@@ -21,7 +21,7 @@ public class InseratorCreateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("answer", "");
-        request.getRequestDispatcher("anzeige_erstellen.ftl").forward(request, response);
+        request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
     }
 
     @Override
@@ -29,29 +29,32 @@ public class InseratorCreateServlet extends HttpServlet {
             throws ServletException, IOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-//        double price = Integer.parseInt(request.getParameter("price"));
-//        String text = request.getParameter("text");
-//        String title = request.getParameter("title");
+        double price = Integer.parseInt(request.getParameter("price"));
+        String text = request.getParameter("text");
+        String title = request.getParameter("title");
         boolean canPost = true;
 
-//        if(price != 0){
-//            System.out.println("Preis ist ok: " + price + "€");
-//            if(text.length() > 0 && text.length()<=1000000){
-//                System.out.println("Text ist auch ok: " + text);
-//                if(title.length() > 0 && title.length() <= 100){
-//                    System.out.println("Titel is auch ok: "+ title);
-//                    canPost = true;
-//                }
-//            }
-//        }
+        if(price != 0){
+            System.out.println("Preis ist ok: " + price + "€");
+            if(text.length() > 0 && text.length()<=1000000){
+                System.out.println("Text ist auch ok: " + text);
+                if(title.length() > 0 && title.length() <= 100){
+                    System.out.println("Titel is auch ok: "+ title);
+                    canPost = true;
+                }
+            }
+        }
         String htmlResponse = "";
         if (canPost) {
-
-            String sql = "INSERT INTO ANZEIGE(titel, text, preis, ersteller, status) values ('Bitte', 'Bitte bitte bitte', 100 ,'k.ralf', 'aktiv')";
+            String sql = "INSERT INTO ANZEIGE(titel, text, preis, ersteller, status) values (?, ?, ? , ?, 'aktiv')";
 
             try {
                 connection = DBUtil.createConnection();
                 preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, title);
+                preparedStatement.setString(2, text);
+                preparedStatement.setDouble(3, price);
+                preparedStatement.setString(4, "k.ralf");
                 preparedStatement.executeUpdate();
                 connection.close();
             } catch (SQLException e) {
@@ -64,7 +67,6 @@ public class InseratorCreateServlet extends HttpServlet {
             htmlResponse = "<p>Geht nicht</p>";
         }
         request.setAttribute("answer", htmlResponse);
-        request.getRequestDispatcher("anzeige_erstellen.ftl").forward(request, response);
+        request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
     }
-
 }
