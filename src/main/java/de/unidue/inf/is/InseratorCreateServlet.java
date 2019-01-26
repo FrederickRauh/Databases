@@ -10,7 +10,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import de.unidue.inf.is.domain.User;
 import de.unidue.inf.is.utils.DBUtil;
 
 public class InseratorCreateServlet extends HttpServlet {
@@ -30,11 +32,19 @@ public class InseratorCreateServlet extends HttpServlet {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
-        double price = Integer.parseInt(request.getParameter("price"));
-        String text = request.getParameter("text");
-        String title = request.getParameter("title");
-        boolean canPost = true;
-
+        boolean canPost = false;
+        double price = 0;
+        String text = "";
+        String title = "";
+        if(request.getParameter("price") != null){
+            price = Integer.parseInt(request.getParameter("price"));
+        }
+        if(request.getParameter("text") != null){
+            text = request.getParameter("text");
+        }
+        if(request.getParameter("title")  != null) {
+            title = request.getParameter("title");
+        }
         if(price != 0){
             System.out.println("Preis ist ok: " + price + "€");
             if(text.length() > 0 && text.length()<=1000000){
@@ -45,29 +55,30 @@ public class InseratorCreateServlet extends HttpServlet {
                 }
             }
         }
-        String htmlResponse = "";
-        if (canPost) {
-            String sql = "INSERT INTO ANZEIGE(titel, text, preis, ersteller, status) values (?, ?, ? , ?, 'aktiv')";
-
-            try {
-                connection = DBUtil.createConnection();
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, title);
-                preparedStatement.setString(2, text);
-                preparedStatement.setDouble(3, price);
-                preparedStatement.setString(4, "k.ralf");
-                preparedStatement.executeUpdate();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException c){
-                c.printStackTrace();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("login") != null) {
+            User user = User.class.cast(session.getAttribute("user"));
+            if (canPost) {
+                String sql = "INSERT INTO ANZEIGE(titel, text, preis, ersteller, status) values (?, ?, ? , ?, 'aktiv')";
+                try {
+                    connection = DBUtil.createConnection();
+                    preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setString(2, text);
+                    preparedStatement.setDouble(3, price);
+                    preparedStatement.setString(4, user.getUsername());
+                    preparedStatement.executeUpdate();
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException c) {
+                    c.printStackTrace();
+                }
             }
-            htmlResponse = "<p>Erfolgreich ein Inserat erstellt</p>";
-        } else {
-            htmlResponse = "<p>Geht nicht</p>";
+            response.sendRedirect("all");
+        }else{
+            response.sendRedirect("create");
         }
-        request.setAttribute("answer", htmlResponse);
-        request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
+
     }
 }

@@ -40,7 +40,7 @@ public class MessageServlet extends HttpServlet {
         if(session.getAttribute("login") != null){
             User user = User.class.cast(session.getAttribute("user"));
 
-            String sql = "Select * FROM  NACHRICHT WHERE empfaenger = '" + user.getUsername() + "'" ;
+            String sql = "Select * FROM  NACHRICHT";
 
             System.out.println(sql);
 
@@ -54,7 +54,7 @@ public class MessageServlet extends HttpServlet {
                     String receiver = result.getString("empfaenger");
                     if(receiver.equals(user.getUsername())){
                         messageIn.add(new Message(receiver, sender, message));
-                    }else{
+                    }if(sender.equals(user.getUsername())){
                         messageOut.add(new Message(receiver, sender, message));
                     }
 
