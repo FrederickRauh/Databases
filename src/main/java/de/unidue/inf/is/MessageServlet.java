@@ -67,17 +67,15 @@ public class MessageServlet extends HttpServlet {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
+            request.setAttribute("messagesIn", messageIn);
+            request.setAttribute("messagesOut", messageOut);
+
+            request.getRequestDispatcher("message.ftl").forward(request, response);
+        }else{
+            response.sendRedirect("login");
         }
 
-        System.out.println(messageIn.size());
-        System.out.println(messageOut.size());
 
-        request.setAttribute("messagesIn", messageIn);
-        request.setAttribute("messagesOut", messageOut);
-
-
-
-        request.getRequestDispatcher("message.ftl").forward(request, response);
     }
 
     @Override

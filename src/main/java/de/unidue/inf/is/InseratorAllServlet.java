@@ -60,9 +60,12 @@ public class InseratorAllServlet extends HttpServlet {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
+
+            request.setAttribute("adverts", advertList);
+            request.getRequestDispatcher("inserator_all.ftl").forward(request, response);
+        } else {
+            response.sendRedirect("login");
         }
-        request.setAttribute("adverts", advertList);
-        request.getRequestDispatcher("inserator_all.ftl").forward(request, response);
     }
 
 
@@ -70,7 +73,7 @@ public class InseratorAllServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println(request.getParameterValues("submit"));
+        System.out.println(request.getParameter("id"));
 
         response.sendRedirect("all");
     }

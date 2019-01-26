@@ -27,21 +27,6 @@
 	</div>
 	<div id="site">
 		<form id="centerBlock" name= "createUser" action="/user" method="post">
-			<table>
-				<thead>
-				<tr>
-					<th><p>Vornamen: </p></th>
-					<th><p>Nachnamen:</p></th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr>
-					<td><textarea name="firstName"></textarea></td>
-					<td><textarea name="lastName"></textarea></td>
-					<td><button onClick="submit" value="Erstellen">Hinzufügen</button></td>
-				</tr>
-				</tbody>
-			</table>
 			<br/>
 			<br/>
 			<table class="datatable">

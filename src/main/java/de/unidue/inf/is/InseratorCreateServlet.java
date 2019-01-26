@@ -22,8 +22,13 @@ public class InseratorCreateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("answer", "");
-        request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
+        HttpSession session = request.getSession();
+        if(session.getAttribute("login") != null){
+            request.setAttribute("answer", "");
+            request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
+        }else{
+            response.sendRedirect("login");
+        }
     }
 
     @Override
@@ -36,7 +41,7 @@ public class InseratorCreateServlet extends HttpServlet {
         double price = 0;
         String text = "";
         String title = "";
-        if(request.getParameter("price") != null){
+        if(request.getParameter("price") != null && request.getParameter("price").length() > 0){
             price = Integer.parseInt(request.getParameter("price"));
         }
         if(request.getParameter("text") != null){
@@ -45,6 +50,8 @@ public class InseratorCreateServlet extends HttpServlet {
         if(request.getParameter("title")  != null) {
             title = request.getParameter("title");
         }
+
+
         if(price != 0){
             System.out.println("Preis ist ok: " + price + "€");
             if(text.length() > 0 && text.length()<=1000000){

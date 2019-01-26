@@ -41,18 +41,19 @@
                     <th>Preis</th>
                     <th>Text</th>
                 </tr>
-                <form id="advert_detail" name="advert_detail" action="/all" method="post">
-                    <#list adverts as advert>
+                <#list adverts as advert>
+                    <form id="advert_detail" name="advert_detail" action="/all" method="post">
                         <tr>
                             <td>${advert.title}</td>
                             <td>${advert.price}</td>
                             <td>${advert.text}</td>
+                            <td hidden="true"><textarea name="id">${advert.id}</textarea></td>
                             <td>
-                                <button name="id" onClick="submit" value=${advert.id}>Öffnen</button>
+                                <button onClick="submit">Öffnen</button>
                             </td>
                         </tr>
-                    </#list>
-                </form>
+                    </form>
+                </#list>
             </table>
         </div>
     </div>
