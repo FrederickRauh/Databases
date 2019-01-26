@@ -30,9 +30,9 @@ public class InseratorDetailsServlet extends HttpServlet {
             throws ServletException, IOException {
 
 
-        String deleteOption = "visibility: hidden;";
+        String deleteOption = "visibility: hidden";
         String editOption = "visibilty: hidden";
-        String buyOption = "";
+        String buyOption = "visibility: visible";
         String zuUser_profil = "";
 
         if (anzeigeID == null) {
@@ -61,12 +61,13 @@ public class InseratorDetailsServlet extends HttpServlet {
                 if (id == Integer.parseInt(anzeigeID) && benutzername.equals(ersteller)) {
                     deleteOption = "visibility: visible;";
                     editOption = "visibility: visible";
+                    buyOption = "visibility: hidden";
                 }
 
 
-                //Titel, Erstellungsdatum
-                // Benutzername des Anbieters (Verkäufer), Beschreibung, und Preis sollen angezeigt werden
-                htmlResponse += "<div>" + titel + ersteller + ":<p>" + text + "</p>" + "<br> <br>" + "</div>";
+                // ToDo Titel, Erstellungsdatum Benutzername des Anbieters (Verkäufer), Beschreibung, und Preis sollen angezeigt werden
+                htmlResponse += "<div>" + titel + "<br> <br>" + ersteller + "<br> <br>" + ":<p>" + text + "</p>" + "<br> <br>" + preis+ "</div>";
+
             }
                 rs.close();
                 con.close();
@@ -94,13 +95,12 @@ public class InseratorDetailsServlet extends HttpServlet {
 
 
 
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Boolean deleted = false;
         anzeigeID = request.getParameter("ID");
 
-        // Kaufen Button
+        // Kaufen Button, Status muss nicht geändert werden, da ein trigger existtiert
 
         if (request.getParameter("Kaufen") != null) {
             Connection con = null;
@@ -123,11 +123,11 @@ public class InseratorDetailsServlet extends HttpServlet {
 
             //   Edit Button
         } else if (request.getParameter("Editieren") != null) {
-            request.getRequestDispatcher("anzeige_editieren").forward(request, response);
+            request.getRequestDispatcher("anzeige_editieren.ftl").forward(request, response);
 
             //   Benutzername Button
         } else if (request.getParameter("zuUser_profil") != null) {
-            request.getRequestDispatcher("user_profil").forward(request, response);
+            request.getRequestDispatcher("user_profil.ftl").forward(request, response);
 
 
             // Delete button
@@ -145,7 +145,7 @@ public class InseratorDetailsServlet extends HttpServlet {
                 stm.close();
                 con.close();
                 anzeigeID= null;
-                request.getRequestDispatcher("hauptseite").forward(request, response);
+                request.getRequestDispatcher("inserator_all.ftl").forward(request, response);
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
