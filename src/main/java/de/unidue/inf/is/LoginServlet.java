@@ -39,6 +39,11 @@ public class LoginServlet extends HttpServlet {
 
         String name = request.getParameter("name");
         String username = request.getParameter("username");
+        boolean register = false;
+        if(request.getParameter("register") != null) {
+
+            register = true;
+        }
 
         System.out.println("Login in with: " + name + " " + username);
 
@@ -50,21 +55,31 @@ public class LoginServlet extends HttpServlet {
             if (username != null) {
                 try {
                     connection = DBUtil.createConnection();
-                    preparedStatement = connection.prepareStatement(sql);
-                    ResultSet result = preparedStatement.executeQuery();
-                    while (result.next()) {
-                        String u = result.getString("benutzername");
-                        String n = result.getString("name");
-                        String[] splitStr = n.split("\\s+");
-                        User toAdd = new User(splitStr[0], splitStr[1], u);
-                        userList.add(toAdd);
+                    if(register){
+                        sql = "INSERT INTO BENUTZER(benutzername, name) values (?, ?)";
+                        preparedStatement = connection.prepareStatement(sql);
+                        preparedStatement.setString(1, username);
+                        preparedStatement.setString(2, name);
+                        preparedStatement.executeUpdate();
 
-                        if (result.getString("benutzername").equals(username)) {
-                            if (result.getString("name").equals(name)) {
-                                login = true;
+                        login = true;
+                    }else {
+                        preparedStatement = connection.prepareStatement(sql);
+                        ResultSet result = preparedStatement.executeQuery();
+                        while (result.next()) {
+                            String u = result.getString("benutzername");
+                            String n = result.getString("name");
+                            String[] splitStr = n.split("\\s+");
+                            User toAdd = new User(splitStr[0], splitStr[1], u);
+                            userList.add(toAdd);
+                            if (result.getString("benutzername").equals(username)) {
+                                if (result.getString("name").equals(name)) {
+                                    login = true;
+                                }
                             }
                         }
                     }
+                    connection.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException c) {

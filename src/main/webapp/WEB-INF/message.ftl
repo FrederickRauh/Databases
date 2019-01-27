@@ -50,14 +50,14 @@
 		<table>
 			<thead>
 			<tr>
-				<th>Von: </th>
+				<th>An: </th>
 				<th>Nachricht: </th>
 			</tr>
 			</thead>
 			<tbody>
 			<#list messagesOut as message>
 				<tr>
-					<td>${message.sender}</td> <td>${message.message}</td>
+					<td>${message.receiver}</td> <td>${message.message}</td>
 				</tr>
 			</#list>
 			</tbody>

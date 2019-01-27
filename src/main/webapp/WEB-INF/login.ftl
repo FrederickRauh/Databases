@@ -21,12 +21,14 @@
                 <tr>
                     <th><p>Name: </p></th>
                     <th><p>Username: </p></th>
+                    <th><p>New? </p></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td><textarea name="name"></textarea></td>
                     <td><textarea name="username"></textarea></td>
+                    <td><input type="checkbox" name="register"/></td>
                     <td>
                         <button onClick="submit" value="login">Login</button>
                     </td>

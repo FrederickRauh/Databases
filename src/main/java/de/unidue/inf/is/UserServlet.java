@@ -33,13 +33,35 @@ public final class UserServlet extends HttpServlet {
         userList = new ArrayList<>();
 
         HttpSession session = request.getSession();
-        if(session.getAttribute("login") != null){
+        if (session.getAttribute("login") != null) {
             User user = User.class.cast(session.getAttribute("user"));
             userList = (List<User>) session.getAttribute("users");
 
+            if (userList.size() == 0) {
+                String sql = "SELECT * FROM BENUTZER";
+
+                try {
+                    connection = DBUtil.createConnection();
+                    preparedStatement = connection.prepareStatement(sql);
+                    ResultSet result = preparedStatement.executeQuery();
+                    while (result.next()) {
+                        String username = result.getString("benutzername");
+                        String name = result.getString("name");
+                        String[] splitStr = name.split("\\s+");
+                        User toAdd = new User(splitStr[0], splitStr[1], username);
+                        userList.add(toAdd);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException c) {
+                    c.printStackTrace();
+                }
+            }
+            request.setAttribute("users", userList);
+            request.getRequestDispatcher("user.ftl").forward(request, response);
+        }else{
+            response.sendRedirect("login");
         }
-        request.setAttribute("users", userList);
-        request.getRequestDispatcher("user.ftl").forward(request, response);
     }
 
     @Override

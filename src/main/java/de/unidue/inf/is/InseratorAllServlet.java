@@ -37,7 +37,7 @@ public class InseratorAllServlet extends HttpServlet {
         if (session.getAttribute("login") != null) {
             User user = User.class.cast(session.getAttribute("user"));
 
-            String sql = "Select TEXT AS text, TITEL AS title, PREIS AS price FROM  ANZEIGE";
+            String sql = "Select TEXT AS text, TITEL AS title, PREIS AS price, ID AS id FROM  ANZEIGE";
 
             try {
                 connection = DBUtil.createConnection();
@@ -47,7 +47,9 @@ public class InseratorAllServlet extends HttpServlet {
                     double price = result.getDouble("price");
                     String text = result.getString("text");
                     String title = result.getString("title");
-                    Advert toAdd = new Advert(price, text, title);
+                    int id = result.getInt("id");
+                    System.out.println("ID : " + id);
+                    Advert toAdd = new Advert(price, text, title, id);
                     advertList.add(toAdd);
                 }
                 result.close();
@@ -58,13 +60,21 @@ public class InseratorAllServlet extends HttpServlet {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
+
+            request.setAttribute("adverts", advertList);
+            request.getRequestDispatcher("inserator_all.ftl").forward(request, response);
+        } else {
+            response.sendRedirect("login");
         }
-        request.setAttribute("adverts", advertList);
-        request.getRequestDispatcher("inserator_all.ftl").forward(request, response);
     }
 
+
+    //todo weiter leiten auf die entsprechende detail page
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println(request.getParameter("id"));
+
+        response.sendRedirect("all");
     }
 }
