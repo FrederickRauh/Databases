@@ -48,9 +48,62 @@ public class InseratorDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("login") != null){
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+
+            User user = User.class.cast(session.getAttribute("user"));
+            String test = (String) session.getAttribute("advertId");
+            int advertId = Integer.parseInt(test);
+            String sql = "";
+            try{
+                connection = DBUtil.createConnection();
+                if(request.getParameter("buy") != null){
+
+
+                    System.out.println("buy");
+                }else if(request.getParameter("edit") != null){
+
+
+                    System.out.println("edit");
+                }else if(request.getParameter("delete") != null){
+
+
+                    System.out.println("Delete");
+                }else if(request.getParameter("comment") != null){
+                    int id = 0;
+                    String text = request.getParameter("text");
+                    if(text.length() > 0){
+                        sql = "INSERT INTO KOMMENTAR(text) values (?)";
+                        preparedStatement = connection.prepareStatement(sql);
+                        preparedStatement.setString(1, text);
+                        preparedStatement.executeUpdate();
+
+                        sql = "SELECT * FROM KOMMENTAR";
+                        preparedStatement = connection.prepareStatement(sql);
+                        ResultSet result = preparedStatement.executeQuery();
+                        while(result.next()){
+                            if(result.getString("text").equals(text)){
+                                id = result.getInt("ID");
+                            }
+                        }
+                        result.close();
+                        if(id != 0) {
+                            sql = "INSERT INTO HATKOMMENTAR(kommentarID, benutzername, anzeigeID) values (?, ?, ?)";
+                            preparedStatement = connection.prepareStatement(sql);
+                            preparedStatement.setInt(1, id);
+                            preparedStatement.setString(2, user.getUsername());
+                            preparedStatement.setInt(3, advertId);
+                            preparedStatement.executeUpdate();
+                        }
+                    }
+                }
+            }catch (SQLException s){
+                s.printStackTrace();
+            }catch (ClassNotFoundException c){
+                c.printStackTrace();
+            }
 
             String url = "detail?id="+session.getAttribute("advertId");
-            System.err.println(url);
             response.sendRedirect(url);
         }else{
             response.sendRedirect("login");
@@ -127,7 +180,6 @@ public class InseratorDetailServlet extends HttpServlet {
                 }
                 result.close();
             }
-
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();

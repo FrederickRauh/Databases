@@ -75,9 +75,8 @@
         <form action="/detail" method="post">
             <table>
                 <tr>
-                    <td name="id">${advert.id}</td>
-                    <td><textarea></textarea></td>
-                    <td><button onClick="submit" value="comment">Kommentieren</button></td>
+                    <td><textarea name="text"></textarea></td>
+                    <td><button onClick="submit" name="comment">Kommentieren</button></td>
                 </tr>
             </table>
         </form>
