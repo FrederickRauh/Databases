@@ -70,7 +70,6 @@ public final class UserServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if(session.getAttribute("login") != null){
             String toUser = (String) request.getParameter("username");
-            System.out.println(toUser);
             session.setAttribute("toUser", toUser);
             response.sendRedirect("send");
         }else{

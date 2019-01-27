@@ -30,7 +30,6 @@ public class MessageSendServlet extends HttpServlet {
         if(session.getAttribute("login") != null){
             String toUser = (String) session.getAttribute("toUser");
             request.setAttribute("toUser", toUser);
-            System.out.println(toUser);
             request.getRequestDispatcher("message_send.ftl").forward(request,response);
         }else{
             response.sendRedirect("login");
