@@ -43,7 +43,7 @@ public class InseratorDetailsServlet extends HttpServlet {
         Connection con = null;
         PreparedStatement stm = null;
         String sql = "SELECT a.id as ID, a.titel AS Titel, a.text AS Text, a.preis AS Preis, a.benutzername AS Benutzername, a.status as Status, "
-                + "FROM Anzeige a " + "JOIN Benutzer b ON a.ersteller = b.benutzername " + "WHERE i.id = " + anzeigeID; // oder b.name
+                + "FROM Anzeige a " + "JOIN Benutzer b ON a.ersteller = b.benutzername " + "WHERE a.id = " + anzeigeID;
 
         try {
             con = DBUtil.getConnection("project");
@@ -100,7 +100,7 @@ public class InseratorDetailsServlet extends HttpServlet {
         Boolean deleted = false;
         anzeigeID = request.getParameter("ID");
 
-        // Kaufen Button, Status muss nicht geändert werden, da ein trigger existtiert
+        // Kaufen Button, Status muss nicht geändert werden, da ein trigger existiert
 
         if (request.getParameter("Kaufen") != null) {
             Connection con = null;
