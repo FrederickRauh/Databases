@@ -13,9 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.events.Comment;
+//import javax.xml.stream.events.Comment;
 
-import de.unidue.inf.is.domain.Advert;
+import de.unidue.inf.is.domain.Comment;
 import de.unidue.inf.is.utils.DBUtil;
 
 public class InseratorDetailsServlet extends HttpServlet {
@@ -111,9 +111,9 @@ public class InseratorDetailsServlet extends HttpServlet {
                 while (result.next()) {
                     int id = result.getInt("id");
                     String text = result.getString("text");
-                    String erstellungsdatum = result.getString("erstellungsdatum");
-                    // ist abstract? Comment toAdd = new Comment(id, text, erstellungsdatum);
-                    //commentList.add(toAdd);
+                    Timestamp created = result.getTimestamp("erstellungsdatum");
+                    Comment toAdd = new Comment(text, created,id);
+                    commentList.add(toAdd);
                 }
                 result.close();
                 connection.close();
