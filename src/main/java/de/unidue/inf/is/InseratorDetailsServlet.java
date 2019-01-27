@@ -6,12 +6,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.events.Comment;
 
+import de.unidue.inf.is.domain.Advert;
 import de.unidue.inf.is.utils.DBUtil;
 
 public class InseratorDetailsServlet extends HttpServlet {
@@ -19,6 +23,7 @@ public class InseratorDetailsServlet extends HttpServlet {
     private String anzeigeID;
     private String benutzername = "m.sven";// userID
     private String htmlResponse;
+    private static List<Comment> commentList = new ArrayList<>();
 
     /**
      *
@@ -66,46 +71,78 @@ public class InseratorDetailsServlet extends HttpServlet {
 
 
                 // ToDo Titel, Erstellungsdatum Benutzername des Anbieters (Verkäufer), Beschreibung, und Preis sollen angezeigt werden
-                htmlResponse += "<div>" + titel + "<br> <br>" + ersteller + "<br> <br>" + ":<p>" + text + "</p>" + "<br> <br>" + preis+ "</div>";
+                htmlResponse += "<div>" + titel + "<br> <br>" + ersteller + "<br> <br>" + ":<p>" + text + "</p>" + "<br> <br>" + preis + "</div>";
 
             }
-                rs.close();
-                con.close();
+            rs.close();
+            con.close();
 
-            } catch(SQLException e){
-                // TODO Auto-generated catch block
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        //request.setAttribute("idP", anzeigeID);
+        //anzeigeID = null;
+        request.setAttribute("deleteOption", deleteOption);
+        request.setAttribute("editOption", editOption);
+        request.setAttribute("buyOption", buyOption);
+        request.setAttribute("titel", htmlResponse);
+        request.setAttribute("text", htmlResponse);
+        request.setAttribute("preis", htmlResponse);
+        request.setAttribute("erstellungsdatum", htmlResponse);
+        request.setAttribute("benutzername", zuUser_profil);
+        request.setAttribute("comments", commentList);
+        request.getRequestDispatcher("anzeige_details.ftl").forward(request, response);
+
+        //um Kommentare aufzulisten
+
+        commentList = new ArrayList<Comment>();
+        if (request.getAttribute("comments") != null) { // wie kann hier überprüft werden, ob es Kommentare zu der Anzeige gibt
+
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            String sql2 = "Select ID as id, TEXT AS text, Erstellungsdatum as erstellungsdatum FROM  Kommentar";
+
+            try {
+                connection = DBUtil.createConnection();
+                preparedStatement = connection.prepareStatement(sql2);
+                ResultSet result = preparedStatement.executeQuery();
+                while (result.next()) {
+                    int id = result.getInt("id");
+                    String text = result.getString("text");
+                    String erstellungsdatum = result.getString("erstellungsdatum");
+                    // ist abstract? Comment toAdd = new Comment(id, text, erstellungsdatum);
+                    //commentList.add(toAdd);
+                }
+                result.close();
+                connection.close();
+
+            } catch (SQLException e) {
                 e.printStackTrace();
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
 
-            request.setAttribute("idP", anzeigeID);
-            anzeigeID = null;
-            request.setAttribute("deleteOption", deleteOption);
-            request.setAttribute("editOption", editOption);
-            request.setAttribute("buyOption", buyOption);
-            request.setAttribute("titel", htmlResponse);
-            request.setAttribute("text", htmlResponse);
-            request.setAttribute("preis", htmlResponse);
-            request.setAttribute("erstellungsdatum", htmlResponse);
-            request.setAttribute("benutzername", zuUser_profil);
-            request.getRequestDispatcher("anzeige_details.ftl").forward(request, response);
-
-
+            request.setAttribute("comments", commentList);
+            request.getRequestDispatcher("anzeige_detais.ftl").forward(request, response);
         }
 
 
+    }
 
 
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Boolean deleted = false;
-        anzeigeID = request.getParameter("ID");
+        anzeigeID = request.getParameter("anzeigeID");
 
         // Kaufen Button, Status muss nicht geändert werden, da ein trigger existiert
+        // Eintrag aus parent table wird automatisch gelöscht, da on delete cascade in kauft benutzt wird
 
         if (request.getParameter("Kaufen") != null) {
             Connection con = null;
-            String sql = "INSERT INTO Kauft (benutzername, anzeigeID, kaufdatum)  VALUES ('" + benutzername + "', " + anzeigeID
-                    + " , kaufdatum)";
+            String sql = "INSERT INTO Kauft (benutzername, anzeigeID)  VALUES (?, 'm.sven')";
             PreparedStatement stm;
             try {
                 con = DBUtil.getConnection("project");
@@ -145,7 +182,7 @@ public class InseratorDetailsServlet extends HttpServlet {
                 stm.executeUpdate();
                 stm.close();
                 con.close();
-                anzeigeID= null;
+                anzeigeID = null;
                 request.getRequestDispatcher("inserator_all.ftl").forward(request, response);
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
@@ -153,11 +190,38 @@ public class InseratorDetailsServlet extends HttpServlet {
             }
 
         }
-        if(!deleted) {
+        if (!deleted) {
             doGet(request, response);
         }
 
-
-
+        String htmlResponse = " ";
+        String input = request.getParameter("createComment");
+        if (input.length() <= 280 && input.length() > 0) {
+            Connection connection = null;
+            String sql = "INSERT INTO KOMMENTAR (id, text, erstellungsdatum) VALUES (?, 'Test')";
+            PreparedStatement preparedStatement;
+            try {
+                connection = DBUtil.getExternalConnection("project");
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, input);
+                preparedStatement.executeUpdate();
+                connection.close();
+            } catch (SQLException sqlE) {
+                sqlE.printStackTrace();
+            }
+            htmlResponse = "<p>Erfolgreich ein Comment erstellt</p>";
+        } else {
+            if (input.length() > 280) {
+                htmlResponse = "<p>Text zu lang, bitte benutze weniger als 280 Zeichen</p>";
+            } else {
+                htmlResponse = "<p>Du musst schon ein Text eingeben</p>";
+            }
+        }
+        request.setAttribute("answer", htmlResponse);
+        request.getRequestDispatcher("inserator_comment.ftl").forward(request, response);
     }
 }
+
+
+
+

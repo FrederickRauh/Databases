@@ -39,6 +39,10 @@
         <table>
             <tr>
                 <td>
+                    ${anzeigeID}</td>
+            </tr>
+            <tr>
+                <td>
                     ${titel}</td>
             </tr>
             <tr>
@@ -53,7 +57,7 @@
             <tr>
                 <td><a href="/details">
                         <link>
-                        Ersteller</link></a></td>
+                        $ersteller</link></a></td>
             </tr>
 
 

@@ -21,20 +21,20 @@ public class InseratorCommentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("answer", "");
-        request.getRequestDispatcher("inserator_comment.ftl").forward(request, response);
+        request.getRequestDispatcher("anzeige_details.ftl").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String htmlResponse = " ";
-        String input = request.getParameter("createInput");
+        String input = request.getParameter("createComment");
         if (input.length() <= 280 && input.length() > 0) {
             Connection connection = null;
-            String sql = "INSERT INTO KOMMENTAR (text, creator) VALUES (?, 'Test')";
+            String sql = "INSERT INTO KOMMENTAR (id, text, erstellungsdatum) VALUES (?, 'Test')";
             PreparedStatement preparedStatement;
             try {
-                connection = DBUtil.getExternalConnection("inserator");
+                connection = DBUtil.getExternalConnection("project");
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, input);
                 preparedStatement.executeUpdate();
