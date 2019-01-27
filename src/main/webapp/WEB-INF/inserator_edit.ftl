@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Inserator</title>
+	<title>Editieren</title>
 	<link rel="stylesheet"
 		  type="text/css"
 		  href="../css/inserator.css">
@@ -25,42 +25,24 @@
 		</table>
 	</div>
 	<div id="site">
-		<form id="centerBlock" name= "createText" action="/create" method="post">
+		<form action="/edit" method="post">
 			<table>
-				<tbody>
 				<tr>
-					<td>
-						<p>Titel: </p>
-					</td>
-					<td>
-						<textarea name="title" cols="10" rows="1"></textarea>
-					</td>
+					<td>Titel: </td>
+					<td><textarea name="title">${advert.title}</textarea></td>
 				</tr>
 				<tr>
-					<td>
-						<p>Preis:</p>
-					</td>
-					<td>
-						<textarea name="price" cols="10" rows="1"></textarea>
-					</td>
+					<td>Preis: </td>
+					<td><textarea name="price">${advert.price}</textarea></td>
 				</tr>
 				<tr>
-					<td>
-						<p>Beschreibung:</p>
-					</td>
-					<td>
-						<textarea name="text" cols="50" rows="6"></textarea>
-					</td>
+					<td>Text: </td>
+					<td><textarea name="text">${advert.text}</textarea></td>
 				</tr>
-				<tr>
-					<br/>
-					<td>
-						<button onClick="submit" value="create">Erstellen</button>
-					</td>
-				</tr>
-				</tbody>
 			</table>
+			<button onclick="submit">Editieren</button>
 		</form>
+
 	</div>
 </div>
 </div>

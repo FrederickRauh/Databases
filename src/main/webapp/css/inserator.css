@@ -45,3 +45,8 @@ a {
     color:white;
     text-decoration: none;
 }
+
+#verkauft{
+    color:RED;
+    font-weight: bold;
+}

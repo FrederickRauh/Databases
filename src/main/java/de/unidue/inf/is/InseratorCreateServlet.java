@@ -42,7 +42,6 @@ public class InseratorCreateServlet extends HttpServlet {
             Connection connection = null;
             PreparedStatement preparedStatement = null;
 
-            boolean canPost = false;
             double price = 0;
             String text = "";
             String title = "";

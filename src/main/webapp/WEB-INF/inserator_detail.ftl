@@ -44,15 +44,21 @@
         <textarea contenteditable="false">${advert.text}</textarea>
         <table>
             <tr>
-                <td>Von: ${advert.creator}</td><td> | </td><td>${advert.timeStamp}</td>
+                <td>Von: ${advert.creator}</td>
+                <td> |</td>
+                <td>${advert.timeStamp}</td>
             </tr>
         </table>
         <table>
             <tr>
-                <#if !isCreator><td><form action="/detail" method="post"><button onClick="submit" name="buy">Kaufen</button></form></td></#if>
-                <#if isCreator>
-                    <td><form action="/detail" method="post"> <button onClick="submit" name="edit">Editieren</button></form></td>
-                    <td><form action="/detail" method="post"> <button onClick="submit" name="delete">Löschen</button></form></td>
+                <#if advert.status != 'verkauft'>
+                    <#if !isCreator><td><form action="/detail" method="post"><button onClick="submit" name="buy">Kaufen</button></form></td></#if>
+                    <#if isCreator>
+                        <td><form action="/detail" method="post"><button onClick="submit" name="edit">Editieren</button></form></td>
+                        <td><form action="/detail" method="post"><button onClick="submit" name="delete">Löschen</button></form></td>
+                    </#if>
+                    <#else>
+                    <p id="verkauft">Bereits VERKAUFT</p>
                 </#if>
 
             </tr>
@@ -60,15 +66,16 @@
         <p>Kommentare: </p>
         <table>
             <thead>
-            <th>Sender: </th>
-            <th>Text: </th>
+            <th>Sender:</th>
+            <th>Text:</th>
             </thead>
             <tbody>
             <#list comments as comment>
-               <tr>
-                   <td>${comment.username}</td>
-                   <td>${comment.text}</td>
-               </tr>
+                <tr>
+                    <td>${comment.username}</td>
+                    <td> |</td>
+                    <td>${comment.text}</td>
+                </tr>
             </#list>
             </tbody>
         </table>
@@ -76,7 +83,9 @@
             <table>
                 <tr>
                     <td><textarea name="text"></textarea></td>
-                    <td><button onClick="submit" name="comment">Kommentieren</button></td>
+                    <td>
+                        <button onClick="submit" name="comment">Kommentieren</button>
+                    </td>
                 </tr>
             </table>
         </form>
