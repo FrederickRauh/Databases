@@ -34,37 +34,40 @@ public class InseratorCreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-
-        boolean canPost = false;
-        double price = 0;
-        String text = "";
-        String title = "";
-        if(request.getParameter("price") != null && request.getParameter("price").length() > 0){
-            price = Integer.parseInt(request.getParameter("price"));
-        }
-        if(request.getParameter("text") != null){
-            text = request.getParameter("text");
-        }
-        if(request.getParameter("title")  != null) {
-            title = request.getParameter("title");
-        }
-
-
-        if(price != 0){
-            System.out.println("Preis ist ok: " + price + "€");
-            if(text.length() > 0 && text.length()<=1000000){
-                System.out.println("Text ist auch ok: " + text);
-                if(title.length() > 0 && title.length() <= 100){
-                    System.out.println("Titel is auch ok: "+ title);
-                    canPost = true;
-                }
-            }
-        }
         HttpSession session = request.getSession();
+
         if (session.getAttribute("login") != null) {
             User user = User.class.cast(session.getAttribute("user"));
+
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+
+            boolean canPost = false;
+            double price = 0;
+            String text = "";
+            String title = "";
+            if(request.getParameter("price") != null && request.getParameter("price").length() > 0){
+                price = Integer.parseInt(request.getParameter("price"));
+            }
+            if(request.getParameter("text") != null){
+                text = request.getParameter("text");
+            }
+            if(request.getParameter("title")  != null) {
+                title = request.getParameter("title");
+            }
+
+
+            if(price != 0){
+                System.out.println("Preis ist ok: " + price + "€");
+                if(text.length() > 0 && text.length()<=1000000){
+                    System.out.println("Text ist auch ok: " + text);
+                    if(title.length() > 0 && title.length() <= 100){
+                        System.out.println("Titel is auch ok: "+ title);
+                        canPost = true;
+                    }
+                }
+            }
+
             if (canPost) {
                 String sql = "INSERT INTO ANZEIGE(titel, text, preis, ersteller, status) values (?, ?, ? , ?, 'aktiv')";
                 try {
@@ -81,11 +84,12 @@ public class InseratorCreateServlet extends HttpServlet {
                 } catch (ClassNotFoundException c) {
                     c.printStackTrace();
                 }
+                response.sendRedirect("all");
+            }else{
+                response.sendRedirect("create");
             }
-            response.sendRedirect("all");
         }else{
-            response.sendRedirect("create");
+           response.sendRedirect("login");
         }
-
     }
 }

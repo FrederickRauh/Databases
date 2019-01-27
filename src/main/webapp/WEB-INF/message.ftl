@@ -20,11 +20,6 @@
 				<td><a href="/message"><link>Nachrichten</link></a></td>
 				<td></td>
 				<td></td>
-				<td>
-					<form name= "createText" action="/message" method="get">
-						<textarea id="userData" name="userData" cols="10" rows="1" on></textarea>
-					</form>
-				</td>
 			</tr>
 			</tbody>
 		</table>

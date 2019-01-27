@@ -28,7 +28,6 @@
                         Nachrichten</link></a></td>
                 <td></td>
                 <td></td>
-                <td><textarea id="userData" name="userData" cols="10" rows="1"></textarea></td>
             </tr>
             </tbody>
         </table>
@@ -42,7 +41,7 @@
                     <th>Text</th>
                 </tr>
                 <#list adverts as advert>
-                    <form id="advert_detail" name="advert_detail" action="/all" method="post">
+                    <form id="advert_detail" name="advert_detail" action="/detail" method="get">
                         <tr>
                             <td>${advert.title}</td>
                             <td>${advert.price}</td>

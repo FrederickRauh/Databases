@@ -20,7 +20,6 @@
 				<td><a href="/message"><link>Nachrichten</link></a></td>
 				<td></td>
 				<td></td>
-				<td><textarea id="userData" name="userData" cols="10" rows="1"></textarea></td>
 			</tr>
 			</tbody>
 		</table>

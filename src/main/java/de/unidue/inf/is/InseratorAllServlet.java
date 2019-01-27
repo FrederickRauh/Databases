@@ -29,13 +29,14 @@ public class InseratorAllServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        advertList = new ArrayList<Advert>();
-
         HttpSession session = request.getSession();
+
         if (session.getAttribute("login") != null) {
             User user = User.class.cast(session.getAttribute("user"));
+
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            advertList = new ArrayList<Advert>();
 
             String sql = "Select TEXT AS text, TITEL AS title, PREIS AS price, ID AS id FROM  ANZEIGE";
 
@@ -48,7 +49,6 @@ public class InseratorAllServlet extends HttpServlet {
                     String text = result.getString("text");
                     String title = result.getString("title");
                     int id = result.getInt("id");
-                    System.out.println("ID : " + id);
                     Advert toAdd = new Advert(price, text, title, id);
                     advertList.add(toAdd);
                 }
@@ -68,13 +68,8 @@ public class InseratorAllServlet extends HttpServlet {
         }
     }
 
-
-    //todo weiter leiten auf die entsprechende detail page
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println(request.getParameter("id"));
-
-        response.sendRedirect("all");
     }
 }

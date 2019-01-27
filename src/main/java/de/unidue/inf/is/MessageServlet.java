@@ -42,8 +42,6 @@ public class MessageServlet extends HttpServlet {
 
             String sql = "Select * FROM  NACHRICHT";
 
-            System.out.println(sql);
-
             try {
                 connection = DBUtil.createConnection();
                 preparedStatement = connection.prepareStatement(sql);

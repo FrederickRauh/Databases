@@ -55,6 +55,24 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>inserator_detail_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.InseratorDetailServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>inserator_detail_servlet</servlet-name>
+    <url-pattern>/detail</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>inserator_edit_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.InseratorEditServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>inserator_edit_servlet</servlet-name>
+    <url-pattern>/edit</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>user_servlet</servlet-name>
     <servlet-class>de.unidue.inf.is.UserServlet</servlet-class>
   </servlet>
@@ -84,16 +102,6 @@
     <servlet-name>lgoin_servlet</servlet-name>
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
-
-  <servlet>
-    <servlet-name>inserator_edit_servlet</servlet-name>
-    <servlet-class>de.unidue.inf.is.InseratorEditServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>inserator_edit_servlet</servlet-name>
-    <url-pattern>/edit</url-pattern>
-  </servlet-mapping>
-
 
 
   <servlet>

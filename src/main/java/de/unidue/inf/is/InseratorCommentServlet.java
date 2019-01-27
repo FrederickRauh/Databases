@@ -21,7 +21,7 @@ public class InseratorCommentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("answer", "");
-        request.getRequestDispatcher("anzeige_details.ftl").forward(request, response);
+        request.getRequestDispatcher("inserator_detail.ftl").forward(request, response);
     }
 
     @Override
