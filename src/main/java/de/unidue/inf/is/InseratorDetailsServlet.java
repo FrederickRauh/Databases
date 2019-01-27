@@ -114,6 +114,7 @@ public class InseratorDetailsServlet extends HttpServlet {
                 con.close();
 
                 // TODO: Seite Aktualisieren
+                request.getRequestDispatcher("anzeige_details.ftl").forward(request, response);
 
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
