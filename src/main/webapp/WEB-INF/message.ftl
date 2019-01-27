@@ -25,38 +25,45 @@
 		</table>
 	</div>
 	<div id="site">
-		<h2>Nachrichten für Sie</h2>
-		<table>
-			<thead>
-			<tr>
-				<th>Von: </th>
-				<th>Nachricht: </th>
-			</tr>
-			</thead>
-			<tbody>
-			<#list messagesIn as message>
+		<#if input>
+			<h2>Nachrichten für Sie</h2>
+			<table>
+				<thead>
 				<tr>
-					<td>${message.sender}</td> <td>${message.message}</td>
+					<th>Von: </th>
+					<th> | </th>
+					<th>Nachricht: </th>
 				</tr>
-			</#list>
-			</tbody>
-		</table>
-		<h2>Nachrichten von Ihnen</h2>
-		<table>
-			<thead>
-			<tr>
-				<th>An: </th>
-				<th>Nachricht: </th>
-			</tr>
-			</thead>
-			<tbody>
-			<#list messagesOut as message>
+				</thead>
+				<tbody>
+				<#list messagesIn as message>
+					<tr>
+						<td>${message.sender}</td><td> | </td><td>${message.message}</td>
+					</tr>
+				</#list>
+				</tbody>
+			</table>
+		</#if>
+		<#if output>
+			<h2>Nachrichten von Ihnen</h2>
+			<table>
+				<thead>
 				<tr>
-					<td>${message.receiver}</td> <td>${message.message}</td>
+					<th>An: </th>
+					<th> | </th>
+					<th>Nachricht: </th>
 				</tr>
-			</#list>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+				<#list messagesOut as message>
+					<tr>
+						<td>${message.receiver}</td><td> | </td><td>${message.message}</td>
+					</tr>
+				</#list>
+				</tbody>
+			</table>
+		</#if>
+
 	</div>
 </div>
 </div>

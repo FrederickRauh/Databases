@@ -90,7 +90,14 @@
     <url-pattern>/message</url-pattern>
   </servlet-mapping>
 
-
+  <servlet>
+    <servlet-name>message_send_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.MessageSendServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>message_send_servlet</servlet-name>
+    <url-pattern>/send</url-pattern>
+  </servlet-mapping>
 
 
 

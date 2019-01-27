@@ -67,5 +67,14 @@ public final class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("login") != null){
+            String toUser = (String) request.getParameter("username");
+            System.out.println(toUser);
+            session.setAttribute("toUser", toUser);
+            response.sendRedirect("send");
+        }else{
+            response.sendRedirect("login");
+        }
     }
 }

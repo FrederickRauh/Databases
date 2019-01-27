@@ -65,8 +65,18 @@ public class MessageServlet extends HttpServlet {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
+            boolean hasMessageIn = false, hasMessageOut = false;
+            if(messageIn.size() > 0){
+                hasMessageIn = true;
+            }
+            if(messageOut.size() > 0){
+                hasMessageOut = true;
+            }
+
             request.setAttribute("messagesIn", messageIn);
+            request.setAttribute("input", hasMessageIn);
             request.setAttribute("messagesOut", messageOut);
+            request.setAttribute("output", hasMessageOut);
 
             request.getRequestDispatcher("message.ftl").forward(request, response);
         }else{

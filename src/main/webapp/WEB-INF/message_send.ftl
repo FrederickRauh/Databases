@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Benutzer</title>
+	<title>Nachrichten</title>
 	<link rel="stylesheet"
 		  type="text/css"
 		  href="../css/inserator.css">
@@ -25,23 +25,16 @@
 		</table>
 	</div>
 	<div id="site">
-		<form id="centerBlock" name= "createUser" action="/user" method="post">
-			<br/>
-			<br/>
-			<table class="datatable">
-				<tr>
-					<th>Vorname: </th>  <th>Nachname: </th> <th>Benutzername: </th> <td>________________________</td>
-				</tr>
-				<#list users as user>
-					<tr>
-						<form action="/user" method="post">
-							<td>${user.firstname}</td><td>${user.lastname}</td> <td>${user.username}</td>
-							<td><button onclick="submit">Nachricht senden</button></td><td><textarea hidden="true" name="username">${user.username}</textarea></td>
-						</form>
-					</tr>
-				</#list>
-			</table>
+		<p>Nachricht an: ${toUser} </p>
+		<form action="/send" method="post">
+		<table>
+			<tr>
+				<td><textarea name="message" cols="50" rows="10"></textarea></td>
+				<td><button onclick="submit">Versenden</button></td>
+			</tr>
+		</table>
 		</form>
+
 	</div>
 </div>
 </div>
