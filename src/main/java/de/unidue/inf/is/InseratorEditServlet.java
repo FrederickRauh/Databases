@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.unidue.inf.is.domain.Advert;
+import de.unidue.inf.is.domain.User;
 import de.unidue.inf.is.utils.DBUtil;
 
 public class InseratorEditServlet extends HttpServlet{
@@ -23,12 +24,15 @@ public class InseratorEditServlet extends HttpServlet{
     protected  void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         HttpSession session = request.getSession();
         if(session.getAttribute("login") != null){
+            User user = User.class.cast(session.getAttribute("user"));
             Advert advert = Advert.class.cast(session.getAttribute("advert"));
-
-
-            System.out.println("Been in get");
-
-            request.getRequestDispatcher("inserator_edit.ftl").forward(request, response);
+            if(user.getUsername().equals(advert.getCreator())) {
+                request.getRequestDispatcher("inserator_edit.ftl").forward(request, response);
+            }else{
+                System.out.println(user.getUsername());
+                System.out.println(advert.getCreator());
+                response.sendRedirect("detail?id="+advert.getId());
+            }
         }else{
             response.sendRedirect("login");
         }

@@ -29,28 +29,28 @@
 			<table>
 				<tbody>
 				<tr>
-					<td>
-						<p>Titel: </p>
-					</td>
-					<td>
-						<textarea name="title" cols="10" rows="1"></textarea>
-					</td>
+					<td><p>Titel: </p></td>
+					<td><textarea name="title" cols="10" rows="1"></textarea></td>
 				</tr>
 				<tr>
-					<td>
-						<p>Preis:</p>
-					</td>
-					<td>
-						<textarea name="price" cols="10" rows="1"></textarea>
-					</td>
+					<td><p>Preis:</p></td>
+					<td><textarea name="price" cols="10" rows="1"></textarea></td>
 				</tr>
 				<tr>
-					<td>
-						<p>Beschreibung:</p>
-					</td>
-					<td>
-						<textarea name="text" cols="50" rows="6"></textarea>
-					</td>
+					<td><p>Beschreibung:</p></td>
+					<td><textarea name="text" cols="50" rows="6"></textarea></td>
+				</tr>
+				<tr>
+					<td>Digitale Waren: </td><td><input type="checkbox" name="digital"/></td>
+				</tr>
+				<tr>
+					<td>Haus & Garten: </td><td><input type="checkbox" name="house"/></td>
+				</tr>
+				<tr>
+					<td>Mode & Kosmetik</td><td><input type="checkbox" name="fashion"/></td>
+				</tr>
+				<tr>
+					<td>Multimedia & Elektronik</td><td><input type="checkbox" name="electronic"/></td>
 				</tr>
 				<tr>
 					<br/>

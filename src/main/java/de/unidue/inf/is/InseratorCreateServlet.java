@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,10 +24,10 @@ public class InseratorCreateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("login") != null){
+        if (session.getAttribute("login") != null) {
             request.setAttribute("answer", "");
             request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
-        }else{
+        } else {
             response.sendRedirect("login");
         }
     }
@@ -45,20 +46,35 @@ public class InseratorCreateServlet extends HttpServlet {
             double price = 0;
             String text = "";
             String title = "";
-            if(request.getParameter("price") != null && request.getParameter("price").length() > 0){
+            if (request.getParameter("price") != null && request.getParameter("price").length() > 0) {
                 price = Integer.parseInt(request.getParameter("price"));
             }
-            if(request.getParameter("text") != null){
+            if (request.getParameter("text") != null) {
                 text = request.getParameter("text");
             }
-            if(request.getParameter("title")  != null) {
+            if (request.getParameter("title") != null) {
                 title = request.getParameter("title");
             }
 
+            ArrayList<String> categories = new ArrayList<>();
 
-            if(price != 0){
-                if(text.length() > 0 && text.length()<=1000000){
-                    if(title.length() > 0 && title.length() <= 100){
+            if (request.getParameter("digital") != null) {
+                categories.add("Digitale Waren");
+            }
+            if (request.getParameter("house") != null) {
+                categories.add("Haus & Garten");
+            }
+            if (request.getParameter("fashion") != null) {
+                categories.add("Mode & Kosmetik");
+            }
+            if (request.getParameter("electronic") != null) {
+                categories.add("Multimedia & Elektronik");
+            }
+
+
+            if (price != 0) {
+                if (text.length() > 0 && text.length() <= 1000000) {
+                    if (title.length() > 0 && title.length() <= 100) {
                         String sql = "INSERT INTO ANZEIGE(titel, text, preis, ersteller, status) values (?, ?, ? , ?, 'aktiv')";
                         try {
                             connection = DBUtil.createConnection();
@@ -69,6 +85,22 @@ public class InseratorCreateServlet extends HttpServlet {
                             preparedStatement.setString(4, user.getUsername());
                             preparedStatement.executeUpdate();
                             connection.close();
+
+                            if (categories.size() > 0) {
+
+                                int id = this.getAdvertId(request, response, title, text, price, user.getUsername());
+
+                                connection = DBUtil.createConnection();
+                                for (int i = 0; i < categories.size(); i++) {
+                                    sql = "INSERT INTO HATKATEGORIE(anzeigeID, kategorie) values(?,?)";
+                                    preparedStatement = connection.prepareStatement(sql);
+                                    preparedStatement.setInt(1, id);
+                                    preparedStatement.setString(2, categories.get(i));
+                                    preparedStatement.executeUpdate();
+                                    preparedStatement.close();
+                                }
+                                connection.close();
+                            }
                         } catch (SQLException e) {
                             e.printStackTrace();
                         } catch (ClassNotFoundException c) {
@@ -77,11 +109,32 @@ public class InseratorCreateServlet extends HttpServlet {
                         response.sendRedirect("all");
                     }
                 }
-            }else{
+            } else {
                 response.sendRedirect("create");
             }
-        }else{
-           response.sendRedirect("login");
+        } else {
+            response.sendRedirect("login");
         }
+    }
+
+    private int getAdvertId(HttpServletRequest request, HttpServletResponse response, String title, String text, double price, String username)
+            throws ServletException, IOException {
+        int id = 0;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        String sql = "SELECT id FROM Anzeige WHERE titel='"+title+"' AND preis='"+price+"' AND ersteller='"+username+"'";
+        try {
+            connection = DBUtil.createConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                id = result.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            c.printStackTrace();
+        }
+        return id;
     }
 }

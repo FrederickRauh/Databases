@@ -34,6 +34,29 @@
     </div>
     <div id="site">
         <div id="centerBlock">
+            <form id="LoginBlock" name="filter" action="/all" method="get">
+            <h2>Nach Kategorie filter? </h2>
+            <table>
+                <tr>
+                    <td>Digitale Waren: </td><td><input type="checkbox" name="digital"/></td>
+                </tr>
+                <tr>
+                    <td>Haus & Garten: </td><td><input type="checkbox" name="house"/></td>
+                </tr>
+                <tr>
+                    <td>Mode & Kosmetik</td><td><input type="checkbox" name="fashion"/></td>
+                </tr>
+                <tr>
+                    <td>Multimedia & Elektronik</td><td><input type="checkbox" name="electronic"/></td>
+                </tr>
+                <tr>
+                    <td><button onclick="submit">Filtern</button></td>
+                </tr>
+            </table>
+            </form>
+
+            <h2>INSERATE</h2>
+
             <table class="datatable">
                 <tr>
                     <th>Title</th>
