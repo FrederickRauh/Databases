@@ -43,8 +43,13 @@ public class InseratorCreateServlet extends HttpServlet {
             PreparedStatement preparedStatement = null;
 
             double price = 0;
+            String category = ""; //muss whrscheinlich ein String[] sein
             String text = "";
             String title = "";
+
+            if (request.getParameter("selected")!= null) {
+                category = request.getParameter("selected");
+            }
             if(request.getParameter("price") != null && request.getParameter("price").length() > 0){
                 price = Integer.parseInt(request.getParameter("price"));
             }
@@ -54,6 +59,24 @@ public class InseratorCreateServlet extends HttpServlet {
             if(request.getParameter("title")  != null) {
                 title = request.getParameter("title");
             }
+            if(category != null) {
+                String sql = "INSERT INTO HATKATEGORIE(kategorie) values (?, ?)";
+                try {
+                    connection = DBUtil.createConnection();
+                    preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1, category); //???
+                    preparedStatement.executeUpdate();
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+
+                }
+            }
+            else{
+                response.sendRedirect("create");
+                }
 
 
             if(price != 0){

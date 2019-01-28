@@ -38,6 +38,17 @@
 				</tr>
 				<tr>
 					<td>
+						<p>Kategorie:</p>
+					</td>
+					<td>
+						<input type="checkbox" name="selected" value="Digitale Waren">Digitale Waren<br>
+						<input type="checkbox" name="selected" value="Haus & Garten">Haus und Garten<br>
+						<input type="checkbox" name="selected" value="Mode & Kosmetik">Mode & Kosmetik<br>
+						<input type="checkbox" name="selected" value="Multimedia & Elektronik"Multimedia & Elektronik<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
 						<p>Preis:</p>
 					</td>
 					<td>
