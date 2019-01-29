@@ -21,6 +21,9 @@ import de.unidue.inf.is.utils.DBUtil;
 
 public class MessageSendServlet extends HttpServlet {
 
+    private static List<Message> ownMessages = new ArrayList<>();
+    private static List<Message> externMessages = new ArrayList<>();
+
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -29,6 +32,20 @@ public class MessageSendServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if(session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true){
             String toUser = (String) session.getAttribute("toUser");
+
+            ownMessages = new ArrayList<>();
+            externMessages = new ArrayList<>();
+
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+
+            String sql = "";
+
+            try{
+
+            }catch(SQLException s){ s.printStackTrace();}
+            catch(ClassNotFoundException c){c.printStackTrace();}
+
             request.setAttribute("toUser", toUser);
             request.getRequestDispatcher("message_send.ftl").forward(request,response);
         }else{
