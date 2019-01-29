@@ -25,6 +25,26 @@
 		</table>
 	</div>
 	<div id="site">
+		<#if hasMessages>
+			<h2>Chatverlauf</h2>
+			<table>
+				<thead>
+				<tr>
+					<th>Von: </th>
+					<th> | </th>
+					<th>Nachricht: </th>
+				</tr>
+				</thead>
+				<tbody>
+				<#list msgs as message>
+					<tr>
+						<td>${message.sender}</td><td> | </td><td>${message.message}</td>
+					</tr>
+				</#list>
+				</tbody>
+			</table>
+		</#if>
+
 		<p>Nachricht an: ${toUser} </p>
 		<form action="/send" method="post">
 		<table>
