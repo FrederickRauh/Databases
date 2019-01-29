@@ -24,7 +24,7 @@ public class InseratorCreateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("login") != null) {
+        if (session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true) {
             request.setAttribute("answer", "");
             request.getRequestDispatcher("inserator_create.ftl").forward(request, response);
         } else {
@@ -37,13 +37,13 @@ public class InseratorCreateServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("login") != null) {
+        if (session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true) {
             User user = User.class.cast(session.getAttribute("user"));
 
             Connection connection = null;
             PreparedStatement preparedStatement = null;
 
-            double price = 0;
+            int price = 0;
             String text = "";
             String title = "";
             if (request.getParameter("price") != null && request.getParameter("price").length() > 0) {
@@ -81,7 +81,7 @@ public class InseratorCreateServlet extends HttpServlet {
                             preparedStatement = connection.prepareStatement(sql);
                             preparedStatement.setString(1, title);
                             preparedStatement.setString(2, text);
-                            preparedStatement.setDouble(3, price);
+                            preparedStatement.setInt(3, price);
                             preparedStatement.setString(4, user.getUsername());
                             preparedStatement.executeUpdate();
                             connection.close();
@@ -117,15 +117,18 @@ public class InseratorCreateServlet extends HttpServlet {
         }
     }
 
-    private int getAdvertId(HttpServletRequest request, HttpServletResponse response, String title, String text, double price, String username)
+    private int getAdvertId(HttpServletRequest request, HttpServletResponse response, String title, String text, int price, String username)
             throws ServletException, IOException {
         int id = 0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = "SELECT id FROM Anzeige WHERE titel='"+title+"' AND preis='"+price+"' AND ersteller='"+username+"'";
+        String sql = "SELECT id FROM Anzeige WHERE titel=? AND preis=? AND ersteller=?";
         try {
             connection = DBUtil.createConnection();
             preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, title);
+            preparedStatement.setInt(2,price);
+            preparedStatement.setString(3, username);
             ResultSet result = preparedStatement.executeQuery();
             while (result.next()) {
                 id = result.getInt("id");

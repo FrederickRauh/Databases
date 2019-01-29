@@ -82,6 +82,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>user_profil_servlet</servlet-name>
+    <servlet-class>de.unidue.inf.is.UserProfilServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>user_profil_servlet</servlet-name>
+    <url-pattern>/userProfil</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>message_servlet</servlet-name>
     <servlet-class>de.unidue.inf.is.MessageServlet</servlet-class>
   </servlet>

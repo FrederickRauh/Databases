@@ -25,6 +25,10 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected  void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+        HttpSession session = request.getSession();
+        boolean login = false;
+        session.setAttribute("login", login);
         request.getRequestDispatcher("login.ftl").forward(request, response);
     }
 
@@ -51,14 +55,17 @@ public class LoginServlet extends HttpServlet {
 
         boolean login = false;
 
-        if (name != null) {
+        if (name != null && name.length() > 0) {
             if (username != null) {
                 try {
                     connection = DBUtil.createConnection();
                     if(register){
                         sql = "INSERT INTO BENUTZER(benutzername, name) values (?, ?)";
                         preparedStatement = connection.prepareStatement(sql);
-                        preparedStatement.setString(1, username);
+                        String[] splitStr = name.split("\\s+");
+                        String newUsername = splitStr[0].charAt(0)+"."+splitStr[1];
+                        username = newUsername;
+                        preparedStatement.setString(1, newUsername);
                         preparedStatement.setString(2, name);
                         preparedStatement.executeUpdate();
 

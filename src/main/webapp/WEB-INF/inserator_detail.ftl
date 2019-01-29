@@ -36,12 +36,16 @@
     <div id="centerBlock">
         <table>
             <tr>
-                <td>${advert.title}</td>
-                <td>Preis: ${advert.price}</td>
+                <td>Titel: ${advert.title}</td>
+            </tr>
+            <tr>
+                <td>Preis: ${advert.price}€</td>
+            </tr>
+            <tr>
                 <td>Status: ${advert.status}</td>
             </tr>
         </table>
-        <textarea contenteditable="false">${advert.text}</textarea>
+        <textarea contenteditable="false" rows="10" cols="134">${advert.text}</textarea>
         <table>
             <tr>
                 <td>Von: ${advert.creator}</td>
@@ -51,6 +55,7 @@
         </table>
         <table>
             <tr>
+                <td><form action="/detail" method="post"><button onClick="submit" name="profil">Zum Profil des verkäufers</button></form></td>
                 <#if advert.status != 'verkauft'>
                     <#if !isCreator><td><form action="/detail" method="post"><button onClick="submit" name="buy">Kaufen</button></form></td></#if>
                     <#if isCreator>
@@ -58,7 +63,7 @@
                         <td><form action="/detail" method="post"><button onClick="submit" name="delete">Löschen</button></form></td>
                     </#if>
                     <#else>
-                    <p id="verkauft">Bereits VERKAUFT</p>
+                    <p id="verkauft">Bereits VERKAUFT an ${buyer} am ${buyTime}</p>
                 </#if>
 
             </tr>
@@ -82,7 +87,7 @@
         <form action="/detail" method="post">
             <table>
                 <tr>
-                    <td><textarea name="text"></textarea></td>
+                    <td><textarea name="text" rows="5" cols="50"></textarea></td>
                     <td>
                         <button onClick="submit" name="comment">Kommentieren</button>
                     </td>

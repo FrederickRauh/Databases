@@ -29,15 +29,15 @@
 			<table>
 				<tr>
 					<td>Titel: </td>
-					<td><textarea name="title">${advert.title}</textarea></td>
+					<td><textarea name="title" cols="20" rows="1">${advert.title}</textarea></td>
 				</tr>
 				<tr>
 					<td>Preis: </td>
-					<td><textarea name="price">${advert.price}</textarea></td>
+					<td><textarea name="price" cols="20" rows="1">${advert.price}</textarea></td>
 				</tr>
 				<tr>
 					<td>Text: </td>
-					<td><textarea name="text">${advert.text}</textarea></td>
+					<td><textarea name="text" cols="50" rows="6">${advert.text}</textarea></td>
 				</tr>
 			</table>
 			<button onclick="submit">Editieren</button>

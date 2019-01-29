@@ -33,7 +33,7 @@ public final class UserServlet extends HttpServlet {
         userList = new ArrayList<>();
 
         HttpSession session = request.getSession();
-        if (session.getAttribute("login") != null) {
+        if (session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true) {
             User user = User.class.cast(session.getAttribute("user"));
             userList = (List<User>) session.getAttribute("users");
 
@@ -68,10 +68,16 @@ public final class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("login") != null){
+        if(session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true){
             String toUser = (String) request.getParameter("username");
             session.setAttribute("toUser", toUser);
-            response.sendRedirect("send");
+
+            if(request.getParameter("loadProfil") != null){
+                session.setAttribute("detailUser", request.getParameter("username"));
+                response.sendRedirect("userProfil");
+            }else {
+                response.sendRedirect("send");
+            }
         }else{
             response.sendRedirect("login");
         }

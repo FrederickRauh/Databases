@@ -30,11 +30,11 @@
 				<tbody>
 				<tr>
 					<td><p>Titel: </p></td>
-					<td><textarea name="title" cols="10" rows="1"></textarea></td>
+					<td><textarea name="title" cols="20" rows="1"></textarea></td>
 				</tr>
 				<tr>
 					<td><p>Preis:</p></td>
-					<td><textarea name="price" cols="10" rows="1"></textarea></td>
+					<td><textarea name="price" cols="20" rows="1"></textarea></td>
 				</tr>
 				<tr>
 					<td><p>Beschreibung:</p></td>

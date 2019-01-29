@@ -27,13 +27,13 @@ public class InseratorAllServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("login") != null) {
+        if (session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true) {
             User user = User.class.cast(session.getAttribute("user"));
 
             ArrayList<Integer> ids = new ArrayList<>();
             boolean filters = false;
 
-            String sql = "Select TEXT AS text, TITEL AS title, PREIS AS price, ID AS id FROM  ANZEIGE";
+            String sql = "Select TEXT AS text, TITEL AS title, PREIS AS price, ID AS id FROM  ANZEIGE WHERE STATUS='aktiv'";
             String sqlAdd = "";
 
 
@@ -62,7 +62,7 @@ public class InseratorAllServlet extends HttpServlet {
             if (filters) {
                 if (ids.size() != 0) {
                     for (int i = 0; i < ids.size(); i++) {
-                        sql = "Select TEXT AS text, TITEL AS title, PREIS AS price, ID AS id FROM  ANZEIGE WHERE ID=" + ids.get(i);
+                        sql = "Select TEXT AS text, TITEL AS title, PREIS AS price, ID AS id FROM  ANZEIGE WHERE ID="+ids.get(i)+" AND Status='aktiv'";
                         advertList = this.loadAdverts(request, response, sql, advertList);
                     }
                 } else {
@@ -109,7 +109,6 @@ public class InseratorAllServlet extends HttpServlet {
                         advertList.add(toAdd);
                     }
                 }
-
             }
             result.close();
             connection.close();

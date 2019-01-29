@@ -20,7 +20,6 @@ import de.unidue.inf.is.domain.Comment;
 import de.unidue.inf.is.domain.User;
 import de.unidue.inf.is.domain.UserComment;
 import de.unidue.inf.is.utils.DBUtil;
-import sun.dc.pr.PRError;
 
 public class InseratorDetailServlet extends HttpServlet {
 
@@ -33,7 +32,7 @@ public class InseratorDetailServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("login") != null) {
+        if (session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true) {
             if (request.getParameter("id") != null) {
                 session.setAttribute("advertId", request.getParameter(("id")));
             }
@@ -47,7 +46,7 @@ public class InseratorDetailServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
         HttpSession session = request.getSession();
-        if (session.getAttribute("login") != null) {
+        if (session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true) {
 
             User user = User.class.cast(session.getAttribute("user"));
             int advertId = Integer.parseInt((String) session.getAttribute("advertId"));
@@ -61,6 +60,11 @@ public class InseratorDetailServlet extends HttpServlet {
                 this.delete(request, response, advertId);
             } else if (request.getParameter("comment") != null) {
                 this.comment(request, response, session, user, advertId, url);
+            } else if(request.getParameter("profil") != null){
+                Advert advert = Advert.class.cast(session.getAttribute("advert"));
+                String creatorNamae = advert.getCreator();
+                session.setAttribute("detailUser", creatorNamae);
+                response.sendRedirect("userProfil");
             }
         } else {
             response.sendRedirect("login");
@@ -80,6 +84,8 @@ public class InseratorDetailServlet extends HttpServlet {
         PreparedStatement preparedStatement = null;
 
         Advert advert = null;
+        String buyer = "";
+        String buyTime = "";
         List<Comment> commentList = new ArrayList<>();
         User user = User.class.cast(session.getAttribute("user"));
         boolean isCreator = false;
@@ -91,7 +97,7 @@ public class InseratorDetailServlet extends HttpServlet {
          * lädt das Inserat anhand der Id die in den URL Params übergeben wird
          */
         String sql = "Select " +
-                "TEXT AS text, TITEL AS title, PREIS AS price, ERSTELLUNGSDATUM AS timeOfCreation, ERSTELLER AS creator, STATUS AS status " +
+                "TEXT AS text, TITEL AS title, PREIS AS price, ERSTELLUNGSDATUM AS timeOfCreation, ERSTELLER AS creator, STATUS AS status, ID AS id " +
                 "FROM  ANZEIGE WHERE id=" + request.getParameter("id");
 
         try {
@@ -105,9 +111,27 @@ public class InseratorDetailServlet extends HttpServlet {
                 String timeStamp = result.getString("timeOfCreation");
                 String creator = result.getString("creator");
                 String status = result.getString("status");
+                int anzeigeIDhier = result.getInt("id");
                 advert = new Advert(price, text, title, creator, status, timeStamp);
+                advert.setId(anzeigeIDhier);
             }
             result.close();
+
+            /**
+             * falls verkauft wird hier mit angezeigt von wem gekauft
+             */
+            if(advert.getStatus().equals("verkauft")){
+                sql = "SELECT * FROM KAUFT WHERE anzeigeId=?";
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, advert.getId());
+                result = preparedStatement.executeQuery();
+                while (result.next()) {
+                    buyer = result.getString("benutzername");
+                    buyTime = result.getString("kaufdatum");
+                }
+                result.close();
+            }
+
             /**
              * lädt nun alle Verbindungen zwischen den Kommentaren und dem Inserat
              */
@@ -143,7 +167,6 @@ public class InseratorDetailServlet extends HttpServlet {
         } catch (ClassNotFoundException c) {
             c.printStackTrace();
         }
-
         if (user.getUsername().equals(advert.getCreator())) {
             isCreator = true;
         }
@@ -154,7 +177,8 @@ public class InseratorDetailServlet extends HttpServlet {
         if (commentList != null) {
             request.setAttribute("comments", commentList);
         }
-
+        request.setAttribute("buyer", buyer);
+        request.setAttribute("buyTime", buyTime);
         request.setAttribute("isCreator", isCreator);
         request.getRequestDispatcher("inserator_detail.ftl").forward(request, response);
     }

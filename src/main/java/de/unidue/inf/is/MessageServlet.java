@@ -37,7 +37,7 @@ public class MessageServlet extends HttpServlet {
         messageOut = new ArrayList<Message>();
 
         HttpSession session = request.getSession();
-        if(session.getAttribute("login") != null){
+        if(session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true){
             User user = User.class.cast(session.getAttribute("user"));
 
             String sql = "Select * FROM  NACHRICHT";

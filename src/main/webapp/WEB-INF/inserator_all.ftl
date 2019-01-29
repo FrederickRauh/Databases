@@ -67,12 +67,17 @@
                     <form id="advert_detail" name="advert_detail" action="/detail" method="get">
                         <tr>
                             <td>${advert.title}</td>
-                            <td>${advert.price}</td>
+                            <td>${advert.price}€</td>
                             <td>${advert.text}</td>
                             <td hidden="true"><textarea name="id">${advert.id}</textarea></td>
                             <td>
                                 <button onClick="submit">Öffnen</button>
                             </td>
+                        </tr>
+                        <tr>
+                            <td>----------------</td>
+                            <td>----</td>
+                            <td>-----------------------------------------------------------------------------------------------------------------------------</td>
                         </tr>
                     </form>
                 </#list>

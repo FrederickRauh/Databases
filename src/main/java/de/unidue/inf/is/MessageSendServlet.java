@@ -27,7 +27,7 @@ public class MessageSendServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("login") != null){
+        if(session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true){
             String toUser = (String) session.getAttribute("toUser");
             request.setAttribute("toUser", toUser);
             request.getRequestDispatcher("message_send.ftl").forward(request,response);
@@ -40,7 +40,7 @@ public class MessageSendServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("login") != null){
+        if(session.getAttribute("login") != null  && (boolean )session.getAttribute("login") == true){
             String toUser = (String) session.getAttribute("toUser");
             User user = User.class.cast(session.getAttribute("user"));
             String msg = request.getParameter("message");

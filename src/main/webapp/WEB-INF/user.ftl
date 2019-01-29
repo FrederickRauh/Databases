@@ -30,13 +30,15 @@
 			<br/>
 			<table class="datatable">
 				<tr>
-					<th>Vorname: </th>  <th>Nachname: </th> <th>Benutzername: </th> <td>________________________</td>
+					<th>Vorname: </th>  <th>Nachname: </th> <th>Benutzername: </th> <td>_______________</td> <th>_____________</th>
 				</tr>
 				<#list users as user>
 					<tr>
 						<form action="/user" method="post">
 							<td>${user.firstname}</td><td>${user.lastname}</td> <td>${user.username}</td>
-							<td><button onclick="submit">Nachricht senden</button></td><td><textarea hidden="true" name="username">${user.username}</textarea></td>
+							<td><button onclick="submit">Nachricht senden</button></td>
+							<td><button onclick="submit" name="loadProfil">Profil Besuchen</button></td>
+							<td><textarea hidden="true" name="username">${user.username}</textarea></td>
 						</form>
 					</tr>
 				</#list>
