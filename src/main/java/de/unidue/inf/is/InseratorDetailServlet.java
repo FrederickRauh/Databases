@@ -1,11 +1,7 @@
 package de.unidue.inf.is;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +53,12 @@ public class InseratorDetailServlet extends HttpServlet {
             } else if (request.getParameter("edit") != null) {
                response.sendRedirect("edit");
             } else if (request.getParameter("delete") != null) {
+                if(session.getAttribute("commentIds") != null){
+                    List<UserComment> hasComment = (ArrayList<UserComment>) session.getAttribute("commentIds");
+                    for(int i = 0; i< hasComment.size(); i++){
+                        this.deleteComment(request, response, hasComment.get(i).getCommentId());
+                    }
+                }
                 this.delete(request, response, advertId);
             } else if (request.getParameter("comment") != null) {
                 this.comment(request, response, session, user, advertId, url);
@@ -175,6 +177,7 @@ public class InseratorDetailServlet extends HttpServlet {
             request.setAttribute("advert", advert);
         }
         if (commentList != null) {
+            session.setAttribute("commentIds", hasComment);
             request.setAttribute("comments", commentList);
         }
         request.setAttribute("buyer", buyer);
@@ -225,10 +228,11 @@ public class InseratorDetailServlet extends HttpServlet {
             Connection connection = null;
             PreparedStatement preparedStatement = null;
 
-            String sql = "DELETE FROM ANZEIGE WHERE ID="+advertId;
+            String sql = "DELETE FROM ANZEIGE WHERE ID=?";
             try{
                 connection = DBUtil.createConnection();
                 preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, advertId);
                 preparedStatement.executeUpdate();
             }catch(SQLException e) {e.printStackTrace();}
             catch(ClassNotFoundException c){c.printStackTrace();}
@@ -287,5 +291,27 @@ public class InseratorDetailServlet extends HttpServlet {
             }
         }
         response.sendRedirect(url);
+    }
+
+    private void deleteComment(HttpServletRequest request, HttpServletResponse response, int id)
+        throws ServletException, IOException{
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        String sql = "DELETE FROM KOMMENTAR WHERE ID=?";
+
+        try{
+            connection = DBUtil.createConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch(SQLException s){
+            s.printStackTrace();
+        }catch(ClassNotFoundException c){
+            c.printStackTrace();
+        }
     }
 }
